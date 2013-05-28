@@ -20,21 +20,27 @@ $(IB_FOLDER): $(DL_FILE)
 imagebuilder: $(IB_FOLDER)
 
 
-## Configuration for MR3020
-MR3020: 
-	cd $(IB_FOLDER)  &&	make image PROFILE="TLMR3020" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
-	cp $(IB_FOLDER)/bin/ar71xx/openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin ./
+%.bin: 
+	cp $(IB_FOLDER)/bin/ar71xx/$@ ./
 
-MR3040: 
-	cd $(IB_FOLDER) &&	make image PROFILE="TLMR3040" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
-	cp $(IB_FOLDER)/bin/ar71xx/openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin ./
+TLMR3020 TLMR3040 TLWR703N :  
+	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
-WR703N: 
-	cd $(IB_FOLDER) &&	make image PROFILE="TLWR703N" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
-	cp $(IB_FOLDER)/bin/ar71xx/openwrt-ar71xx-generic-tl-WR703N-v1-squashfs-factory.bin ./
+############## uncommented. We can reuse one until we need different packages
+#TLMR3040 : 
+#	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
+#
+#TLWR703N : 
+#	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 
 all: imagebuilder MR3020 MR3040 WR703N
+
+MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
+
+MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin
+
+WR703N : TLWR703N openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
 clean:
 	-rm  -r $(IB_FOLDER)
