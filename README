@@ -1,2 +1,8 @@
 Scripts for creating PirateBox Images via OpenWRT's ImageBuilder
 
+make all 
+
+or
+
+make imagebuilder
+make MR3020 
