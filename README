@@ -11,6 +11,10 @@ make MR3020
 The imagebuilder refers to the first PirateBox-OpenWRT-Packagerepository under: 
 http://stable.openwrt.piratebox.de/all/packages/
 
+During customization, the package pbxopg gets installed. This package is located at the 
+repository above and modifies opkg.conf at the final image to use that repository too.
+
+
 See our repository for that too: https://github.com/PirateBox-Dev/openwrt-temp-repository
 
 
