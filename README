@@ -6,3 +6,11 @@ or
 
 make imagebuilder
 make MR3020 
+
+
+The imagebuilder refers to the first PirateBox-OpenWRT-Packagerepository under: 
+http://stable.openwrt.piratebox.de/all/packages/
+
+See our repository for that too: https://github.com/PirateBox-Dev/openwrt-temp-repository
+
+
