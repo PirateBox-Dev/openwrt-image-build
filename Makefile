@@ -9,13 +9,14 @@ IB_FOLDER=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486
 #Image configuration
 FILES_FOLDER=../files/
 ################  -minimum needed-
-GENERAL_PACKAGES="kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe " 
+GENERAL_PACKAGES="pbxopkg kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe " 
  
 $(DL_FILE):
 	$(WGET) -c  -O $(DL_FILE) $(IMAGEBUILDER_URL)
 
 $(IB_FOLDER): $(DL_FILE) 
 	tar -xvjf $(DL_FILE) 
+	echo "src/gz piratebox http://stable.openwrt.piratebox.de/ar71xx/generic/packages" >> $(IB_FOLDER)/repositories.conf
 
 imagebuilder: $(IB_FOLDER)
 
