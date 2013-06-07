@@ -16,7 +16,7 @@ $(DL_FILE):
 
 $(IB_FOLDER): $(DL_FILE) 
 	tar -xvjf $(DL_FILE) 
-	echo "src/gz piratebox http://stable.openwrt.piratebox.de/ar71xx/generic/packages" >> $(IB_FOLDER)/repositories.conf
+	echo "src/gz piratebox http://stable.openwrt.piratebox.de/all/packages" >> $(IB_FOLDER)/repositories.conf
 
 imagebuilder: $(IB_FOLDER)
 
