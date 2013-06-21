@@ -22,4 +22,7 @@ repository above and modifies opkg.conf at the final image to use that repositor
 
 See our repository for that too: https://github.com/PirateBox-Dev/openwrt-temp-repository
 
+###
+# To extract version-tag from OpenWRT
+cp OpenWrt-ImageBuilder-ar71xx_generic-for-linux-*/build_dir/target*/root-ar71xx/etc/openwrt_release ./
 
