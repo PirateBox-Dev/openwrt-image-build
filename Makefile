@@ -4,7 +4,7 @@ VERSION_TAG="PBX_Image_2.0 trunk beta "
 IMAGEBUILDER_URL="http://downloads.openwrt.org/snapshots/trunk/ar71xx/OpenWrt-ImageBuilder-ar71xx_generic-for-linux-x86_64.tar.bz2"
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
-IB_FOLDER=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486
+IB_FOLDER=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-x86_64
 
 
 #Image configuration
