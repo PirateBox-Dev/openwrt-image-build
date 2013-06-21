@@ -29,7 +29,7 @@ imagebuilder: $(IB_FOLDER)
 %.bin: 
 	cp $(IB_FOLDER)/bin/ar71xx/$@ ./
 
-TLMR3020 TLMR3040 TLWR703 :  
+TLMR3020 TLMR3040 TLWR703 TLMR11U:  
 	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 ############## uncommented. We can reuse one until we need different packages
@@ -40,13 +40,15 @@ TLMR3020 TLMR3040 TLWR703 :
 #	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 
-all: imagebuilder MR3020 MR3040 WR703N
+all: imagebuilder MR3020 MR3040 WR703N MR11U
 
 MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
 MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin
 
 WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
+
+MR11U: TLMR11U openwrt-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin
 
 clean:
 	-rm $(VERSION_FILE)
