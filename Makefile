@@ -14,11 +14,15 @@ GENERAL_PACKAGES="pbxopkg kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437
 $(DL_FILE):
 	$(WGET) -c  -O $(DL_FILE) $(IMAGEBUILDER_URL)
 
-$(IB_FOLDER): $(DL_FILE) 
+$(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	tar -xvjf $(DL_FILE) 
 	echo "src/gz piratebox http://stable.openwrt.piratebox.de/all/packages" >> $(IB_FOLDER)/repositories.conf
 
-imagebuilder: $(IB_FOLDER)
+$(VERSION_FILE): 
+	mkdir -p files/etc
+	echo $(VERSION_TAG) > $@
+
+imagebuilder: $(IB_FOLDER) 
 
 
 %.bin: 
@@ -44,6 +48,7 @@ MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin
 WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
 clean:
+	-rm $(VERSION_FILE)
 	-rm  -r $(IB_FOLDER)
 	-rm $(DL_FILE)
 	-rm openwrt-ar71xx-generic*
