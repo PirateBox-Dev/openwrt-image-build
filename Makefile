@@ -1,6 +1,8 @@
 
 VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_Image_2.0 trunk beta "
+SRC_OPENWRT_TAG=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-x86_64/build_dir/target*/root-ar71xx/etc/openwrt_release 
+MY_OPENWRT_TAG=./openwrt_release
 IMAGEBUILDER_URL="http://downloads.openwrt.org/snapshots/trunk/ar71xx/OpenWrt-ImageBuilder-ar71xx_generic-for-linux-x86_64.tar.bz2"
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
@@ -24,6 +26,7 @@ $(VERSION_FILE):
 	echo $(VERSION_TAG) > $@
 
 imagebuilder: $(IB_FOLDER) 
+	- rm -f $(MY_OPENWRT_TAG)
 
 
 %.bin: 
@@ -40,7 +43,10 @@ TLMR3020 TLMR3040 TLWR703 TLMR11U:
 #	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 
-all: imagebuilder MR3020 MR3040 WR703N MR11U
+all: imagebuilder MR3020 MR3040 WR703N MR11U version_tag
+
+version_tag:
+	cp $(SRC_OPENWRT_TAG) $(MY_OPENWRT_TAG)
 
 MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
@@ -51,6 +57,7 @@ WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 MR11U: TLMR11U openwrt-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin
 
 clean:
+	-rm -f $(MY_OPENWRT_TAG)
 	-rm $(VERSION_FILE)
 	-rm  -r $(IB_FOLDER)
 	-rm $(DL_FILE)
