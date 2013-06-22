@@ -1,4 +1,4 @@
-
+VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_Image_2.0"
 IMAGEBUILDER_URL="http://downloads.openwrt.org/attitude_adjustment/12.09/ar71xx/generic/OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486.tar.bz2"
 WGET=wget
