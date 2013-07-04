@@ -116,6 +116,8 @@ clean_installer:
 	- sudo umount $(DEST_IMAGE_FOLDER)
 	- rm -rvf $(DEST_IMAGE_FOLDER)
 	- rm -v $(INSTALL_ZIP)
+	- rm -v $(SRC_IMAGE_UNPACKED)
+	- rm -v $(IMAGE_FILE)
 
 $(INSTALL_ZIP):
 	zip -r9 $@ install/
@@ -171,7 +173,7 @@ MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin
 
 WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
-clean:
+clean: clean_installer
 	-rm $(VERSION_FILE) $(INSTALLER_CONF)
 	-rm  -r $(IB_FOLDER)
 	-rm $(DL_FILE)
