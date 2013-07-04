@@ -10,7 +10,8 @@ IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 
 #Is used for creation of the valid flag file for installer
 ## Which package should be installed later?
-TARGET_PACKAGE="extendRoot-piratebox"
+INSTALL_TARGET=piratebox
+TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 INSTALLER_CONF=$(HERE)/files/etc/auto_package
 
 #Image configuration
@@ -35,8 +36,6 @@ EXT_FOLDER:=/prebuilt_ext/
 DEST_IMAGE_FOLDER=$(IB_FOLDER)/img_tmp
 OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 
-####
-INSTALL_TARGET=piratebox
 
 ifeq ($(INSTALL_TARGET),piratebox)
 	#This has to be aligned with current piratebox version :(
@@ -46,8 +45,8 @@ endif
 
 ####
 INSTALL_ZIP:=$(HERE)/install.zip
-INSTALL_FOLDER:="$(HERE)/install"
-INSTALL_OPENWRT_IMAGE_FILE:="$(INSTALL_FOLDER)/$(IMAGE_FILE)"
+INSTALL_FOLDER:=$(HERE)/install
+INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 #
@@ -101,7 +100,7 @@ opkg_test:
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext --download-only install extendRoot-$(INSTALL_TARGET) 
+	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE)
 
 $(INSTALL_OPENWRT_IMAGE_FILE):
 	gzip -c  $(SRC_IMAGE_UNPACKED) > $@
@@ -116,9 +115,15 @@ clean_installer:
 	- rm -rvf $(OPKG_INSTALL_DEST)
 	- sudo umount $(DEST_IMAGE_FOLDER)
 	- rm -rvf $(DEST_IMAGE_FOLDER)
+	- rm -v $(INSTALL_ZIP)
+
+$(INSTALL_ZIP):
+	zip -r9 $@ install/
+
 
 prepare_install_zip: create_cache cache_package_list  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
-	
+
+install_zip: prepare_install_zip $(INSTALL_ZIP)
 
 
 
