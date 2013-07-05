@@ -11,8 +11,6 @@ IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 #Is used for creation of the valid flag file for installer
 ## Which package should be installed later?
 INSTALL_TARGET=piratebox
-TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
-INSTALLER_CONF=$(HERE)/files/etc/auto_package
 
 #Image configuration
 FILES_FOLDER=$(HERE)/files/
@@ -41,6 +39,7 @@ ifeq ($(INSTALL_TARGET),piratebox)
 	#This has to be aligned with current piratebox version :(
 	ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
 	ADDITIONAL_PACKAGE_FILE:="piratebox_ws_1.0_img.tar.gz"
+	TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 endif
 
 ####
@@ -49,6 +48,8 @@ INSTALL_FOLDER:=$(HERE)/install
 INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
+INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
+ 
 #
 
 OPKG_CACHE=$(IB_FOLDER)/dl
@@ -82,6 +83,9 @@ $(IMAGE_FILE):
 
 $(INSTALL_ADDITIONAL_PACKAGE_FILE):
 # TODO	wget -c -O $@ $(ADDITIONAL_PACKAGE_IMAGE_URL)
+
+$(INSTALLER_CONF):
+	echo $(TARGET_PACKAGE) > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
@@ -123,7 +127,7 @@ $(INSTALL_ZIP):
 	zip -r9 $@ install/
 
 
-prepare_install_zip: create_cache cache_package_list  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
+prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF)  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
 
 install_zip: prepare_install_zip $(INSTALL_ZIP)
 
@@ -136,17 +140,13 @@ install_zip: prepare_install_zip $(INSTALL_ZIP)
 $(DL_FILE):
 	$(WGET) -c  -O $(DL_FILE) $(IMAGEBUILDER_URL)
 
-$(IB_FOLDER): $(DL_FILE) $(VERSION_FILE) $(INSTALLER_CONF)
+$(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	tar -xvjf $(DL_FILE) 
 	echo "src/gz piratebox http://dev.openwrt.piratebox.de/all/packages" >> $(IB_FOLDER)/repositories.conf
 
 $(VERSION_FILE): 
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
-
-$(INSTALLER_CONF):
-	mkdir -p files/etc
-	echo $(TARGET_PACKAGE) > $@
 
 imagebuilder: $(IB_FOLDER) 
 
