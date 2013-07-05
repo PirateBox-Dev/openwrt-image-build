@@ -64,7 +64,7 @@ OPKG_WITHOUT_POSTINSTALL:=  \
   IPKG_STATE_DIR=$(IPKG_STATE_DIR) \
   $(OPKG_BIN) \
   --cache $(INSTALL_CACHE_FOLDER) \
-  -f $(INSTALL_REPOSITORY_CONF) \
+  -f $(REPOSITORY_CONF) \
   --offline-root $(IPKG_INSTROOT) \
   --force-depends \
   --force-overwrite \
@@ -105,12 +105,21 @@ umount_ext:
 	sudo umount $(DEST_IMAGE_FOLDER)
 
 opkg_test:
-	$(OPKG)  depends extendRoot | awk '{print $$1}' 
+	cd $(IB_FOLDER) && \
+	$(OPKG) update && \
+	$(OPKG) -d ext  --download-only install extendRoot-piratebox > $(HERE)/opkg_log 
+	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
-create_cache: $(INSTALL_REPOSITORY_CONF) $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
+
+create_cache:  $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE)
+	# locally packages out of imagebuilder now
+	cd $(IB_FOLDER) && \
+	$(OPKG) update && \
+	$(OPKG) -d ext  --download-only install extendRoot-piratebox > $(HERE)/opkg_log 
+	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 $(INSTALL_OPENWRT_IMAGE_FILE):
 	gzip -c  $(SRC_IMAGE_UNPACKED) > $@
@@ -128,6 +137,7 @@ clean_installer:
 	- rm -v $(INSTALL_ZIP)
 	- rm -v $(SRC_IMAGE_UNPACKED)
 	- rm -v $(IMAGE_FILE)
+	- rm $(HERE)/opkg_log
 
 $(INSTALL_ZIP):
 	zip -r9 $@ install/
