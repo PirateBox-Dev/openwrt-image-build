@@ -50,11 +50,12 @@ INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
  
+INSTALL_REPOSITORY_CONF=$(HERE)/my_repositories.conf 
 #
 
+REPOSITORY_CONF=$(IB_FOLDER)/repositories.conf
 OPKG_CACHE=$(IB_FOLDER)/dl
 OPKG_BIN=$(IB_FOLDER)/staging_dir/host/bin/opkg
-REPOSITORY_CONF=$(IB_FOLDER)/repositories.conf 
 OPKG_WITHOUT_POSTINSTALL:=  \
   IPKG_TMP=$(IPKG_TMP) \
   IPKG_INSTROOT=$(IPKG_INSTROOT) \
@@ -63,7 +64,7 @@ OPKG_WITHOUT_POSTINSTALL:=  \
   IPKG_STATE_DIR=$(IPKG_STATE_DIR) \
   $(OPKG_BIN) \
   --cache $(INSTALL_CACHE_FOLDER) \
-  -f $(REPOSITORY_CONF) \
+  -f $(INSTALL_REPOSITORY_CONF) \
   --offline-root $(IPKG_INSTROOT) \
   --force-depends \
   --force-overwrite \
@@ -84,6 +85,11 @@ $(IMAGE_FILE):
 $(INSTALL_ADDITIONAL_PACKAGE_FILE):
 # TODO	wget -c -O $@ $(ADDITIONAL_PACKAGE_IMAGE_URL)
 
+
+$(INSTALL_REPOSITORY_CONF):
+	grep src/gz $(REPOSITORY_CONF) > $@
+	sed 's|# src/gz|src/gz|' -i $@
+
 $(INSTALLER_CONF):
 	echo $(TARGET_PACKAGE) > $@
 
@@ -101,7 +107,7 @@ umount_ext:
 opkg_test:
 	$(OPKG)  depends extendRoot | awk '{print $$1}' 
 
-create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
+create_cache: $(INSTALL_REPOSITORY_CONF) $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE)
