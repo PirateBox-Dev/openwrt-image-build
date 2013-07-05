@@ -7,6 +7,16 @@ or
 make imagebuilder
 make MR3020 
 
+If you want to create a install.zip for a offline installtion, you have to run 
+
+make imagebuilder
+make MR3020
+
+and then the final command ist
+
+make install_zip INSTALL_TARGET="piratebox"
+
+(that results an install_zip)
 
 The imagebuilder refers to the first PirateBox-OpenWRT-Packagerepository under: 
 http://stable.openwrt.piratebox.de/all/packages/

@@ -10,7 +10,7 @@ IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 
 #Is used for creation of the valid flag file for installer
 ## Which package should be installed later?
-INSTALL_TARGET=piratebox
+#INSTALL_TARGET=piratebox
 
 #Image configuration
 FILES_FOLDER=$(HERE)/files/
@@ -43,7 +43,7 @@ ifeq ($(INSTALL_TARGET),piratebox)
 endif
 
 ####
-INSTALL_ZIP:=$(HERE)/install.zip
+INSTALL_ZIP:=$(HERE)/install_$(INSTALL_TARGET).zip
 INSTALL_FOLDER:=$(HERE)/install
 INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
@@ -127,7 +127,7 @@ $(INSTALL_OPENWRT_IMAGE_FILE):
 cache_package_list:
 	cp -v $(IPKG_STATE_DIR)/lists/piratebox   $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
 	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
-	cp -v $(IPKG_STATE_DIR)/lists/imagebuilder  $(INSTALL_CACHE_FOLDER)/Package.gz_attitude_adjustment
+	gzip -c  $(IPKG_STATE_DIR)/lists/imagebuilder  >  $(INSTALL_CACHE_FOLDER)/Package.gz_attitude_adjustment
 
 clean_installer:
 	- rm -rvf $(INSTALL_FOLDER)
