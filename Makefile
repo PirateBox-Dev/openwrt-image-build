@@ -42,6 +42,12 @@ ifeq ($(INSTALL_TARGET),piratebox)
 	TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 endif
 
+ifeq ( $(INSTALL_TARGET),librarybox)
+	ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
+	ADDITIONAL_PACKAGE_FILE:="librarybox_2.0_img.tar.gz"
+	TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+endif
+
 ####
 INSTALL_ZIP:=$(HERE)/install_$(INSTALL_TARGET).zip
 INSTALL_FOLDER:=$(HERE)/install
