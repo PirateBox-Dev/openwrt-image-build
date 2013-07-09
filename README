@@ -16,7 +16,12 @@ and then the final command ist
 
 make install_zip INSTALL_TARGET="piratebox"
 
-(that results an install_zip)
+(that results an install_piratebox.zip)
+
+Currently available INSTALL_TARGETs:
+
+   - piratebox  (Basic PirateBox
+   - librarybox
 
 The imagebuilder refers to the first PirateBox-OpenWRT-Packagerepository under: 
 http://stable.openwrt.piratebox.de/all/packages/
