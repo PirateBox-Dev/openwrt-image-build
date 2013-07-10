@@ -195,13 +195,9 @@ MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin
 
 WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
-<<<<<<< HEAD
 WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin
 
-clean:
-=======
 clean: clean_installer
->>>>>>> more stuff to clean added
 	-rm $(VERSION_FILE) $(INSTALLER_CONF)
 	-rm  -r $(IB_FOLDER)
 	-rm $(DL_FILE)
