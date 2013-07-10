@@ -140,7 +140,7 @@ clean_installer:
 	- rm -rvf $(OPKG_INSTALL_DEST)
 	- sudo umount $(DEST_IMAGE_FOLDER)
 	- rm -rvf $(DEST_IMAGE_FOLDER)
-	- rm -v $(INSTALL_ZIP)
+	- rm -v $(INSTALL_ZIP) ./install_*.zip
 	- rm -v $(SRC_IMAGE_UNPACKED)
 	- rm -v $(IMAGE_FILE)
 	- rm $(HERE)/opkg_log
