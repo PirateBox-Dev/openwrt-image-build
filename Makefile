@@ -34,19 +34,24 @@ EXT_FOLDER:=/prebuilt_ext/
 DEST_IMAGE_FOLDER=$(IB_FOLDER)/img_tmp
 OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 
-
+eval_install_zip:
+ifeq ($(INSTALL_TARGET),)
+	$(error "No INSTALL_TARGET set")
+else
+	- rm $(INSTALLER_CONF)
+endif
 ifeq ($(INSTALL_TARGET),piratebox)
-	#This has to be aligned with current piratebox version :(
-	ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
-	ADDITIONAL_PACKAGE_FILE:="piratebox_ws_1.0_img.tar.gz"
-	TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+#This has to be aligned with current piratebox version :(
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:="piratebox_ws_1.0_img.tar.gz"
+TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+endif 
+ifeq ($(INSTALL_TARGET),librarybox)
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:="librarybox_2.0_img.tar.gz"
+TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 endif
 
-ifeq ( $(INSTALL_TARGET),librarybox)
-	ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
-	ADDITIONAL_PACKAGE_FILE:="librarybox_2.0_img.tar.gz"
-	TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
-endif
 
 ####
 INSTALL_ZIP:=$(HERE)/install_$(INSTALL_TARGET).zip
@@ -113,7 +118,7 @@ umount_ext:
 opkg_test:
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext  --download-only install extendRoot-piratebox > $(HERE)/opkg_log 
+	$(OPKG) -d ext  --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log 
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 
@@ -124,12 +129,13 @@ create_cache:  $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	# locally packages out of imagebuilder now
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext  --download-only install extendRoot-piratebox > $(HERE)/opkg_log 
+	$(OPKG) -d ext  --download-only install  $(TARGET_PACKAGE) > $(HERE)/opkg_log 
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 $(INSTALL_OPENWRT_IMAGE_FILE):
 	gzip -c  $(SRC_IMAGE_UNPACKED) > $@
 
+##### Repository-Informations
 cache_package_list:
 	cp -v $(IPKG_STATE_DIR)/lists/piratebox   $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
 	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
@@ -151,7 +157,7 @@ $(INSTALL_ZIP):
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF)  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
 
-install_zip: prepare_install_zip $(INSTALL_ZIP)
+install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
 
 
 
