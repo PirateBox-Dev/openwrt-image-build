@@ -6,3 +6,5 @@ OpenWRT.img.gz
 install*
 openwrt-ar*
 opkg_log
+librarybox_*
+piratebox_*

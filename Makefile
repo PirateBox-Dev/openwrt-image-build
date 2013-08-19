@@ -43,12 +43,12 @@ endif
 ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:="piratebox_ws_1.0_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:="librarybox_2.0_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 endif
 
@@ -93,8 +93,11 @@ $(INSTALL_CACHE_FOLDER) $(INSTALL_FOLDER) $(OPKG_INSTALL_DEST):
 $(IMAGE_FILE):
 	wget -c -O $@ $(IMAGE_DL_URL)
 
-$(INSTALL_ADDITIONAL_PACKAGE_FILE):
-# TODO	wget -c -O $@ $(ADDITIONAL_PACKAGE_IMAGE_URL)
+$(ADDITIONAL_PACKAGE_FILE):
+	wget -c -O $@ $(ADDITIONAL_PACKAGE_IMAGE_URL)
+
+$(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
+	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 
 $(INSTALL_REPOSITORY_CONF):
