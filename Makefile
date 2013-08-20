@@ -2,7 +2,7 @@
 HERE:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 ARCH=ar71xx
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.0"
+VERSION_TAG="PBX_auto_Image_2.1"
 IMAGEBUILDER_URL="http://downloads.openwrt.org/attitude_adjustment/12.09/$(ARCH)/generic/OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486.tar.bz2"
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
@@ -15,7 +15,7 @@ IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 #Image configuration
 FILES_FOLDER=$(HERE)/files/
 ################  -minimum needed-
-GENERAL_PACKAGES="pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe " 
+GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe  
 
 
 #-----------------------------------------
@@ -39,19 +39,26 @@ ifeq ($(INSTALL_TARGET),)
 	$(error "No INSTALL_TARGET set")
 else
 	- rm $(INSTALLER_CONF)
+	$(parse_install_target)
 endif
+
+
+parse_install_target:
 ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+IMAGEPREFIX:=$(INSTALL_TARGET)
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+# Add additional packages to image build directly on root
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox 
+IMAGEPREFIX:=$(INSTALL_TARGET)
 endif
-
 
 ####
 INSTALL_ZIP:=$(HERE)/install_$(INSTALL_TARGET).zip
@@ -183,10 +190,14 @@ imagebuilder: $(IB_FOLDER)
 
 
 %.bin: 
-	cp $(IB_FOLDER)/bin/ar71xx/$@ ./
+ifneq ($(IMAGEPREFIX),) 
+	cp $(IB_FOLDER)/bin/ar71xx/$@ ./$(INSTALL_TARGET)_$@
+else
+	cp $(IB_FOLDER)/bin/ar71xx/$@ ./$@
+endif
 
-TLMR3020 TLMR3040 TLWR703 TLWR842 :  
-	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
+TLMR3020 TLMR3040 TLWR703 TLWR842 :  parse_install_target
+	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 ############## uncommented. We can reuse one until we need different packages
 #TLMR3040 : 
