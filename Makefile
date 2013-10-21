@@ -56,7 +56,7 @@ ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img
 ADDITIONAL_PACKAGE_FILE:=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 # Add additional packages to image build directly on root
-GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox 
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox piratebox-mesh 
 IMAGEPREFIX:=$(INSTALL_TARGET)
 endif
 
