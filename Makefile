@@ -48,7 +48,7 @@ ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
-TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard"
 IMAGEPREFIX:=$(INSTALL_TARGET)
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
@@ -166,6 +166,11 @@ $(INSTALL_ZIP):
 
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF)  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
+ifeq ($(INSTALL_TARGET),piratebox)
+	KAREHA_RELEASE=kareha_3.1.4.zip
+	wget http://wakaba.c3.cx/releases/$(KAREHA_RELEASE)
+	cp -v $(KAREHA_RELEASE)  $(INSTALL_FOLDER) 
+endif 
 
 install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
 
