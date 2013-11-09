@@ -48,7 +48,7 @@ ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
-TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard"
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard
 IMAGEPREFIX:=$(INSTALL_TARGET)
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
