@@ -29,7 +29,7 @@ IPKG_STATE_DIR=$(IPKG_OFFLINE_ROOT)/usr/lib/opkg
 
 IMAGE_FILE:=OpenWRT.img.gz
 SRC_IMAGE_UNPACKED:=OpenWRT.img
-IMAGE_DL_URL:=http://downloads.piratebox.de/OpenWRT.img.gz
+IMAGE_DL_URL:=http://downloads.piratebox.de/OpenWRT_ext4_100MB.img.gz
 EXT_FOLDER:=/prebuilt_ext/
 DEST_IMAGE_FOLDER=$(IB_FOLDER)/img_tmp
 OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
