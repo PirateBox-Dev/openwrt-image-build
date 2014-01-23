@@ -46,7 +46,7 @@ endif
 parse_install_target:
 ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://beta.openwrt.piratebox.de/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 IMAGEPREFIX:=$(INSTALL_TARGET)
