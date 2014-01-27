@@ -54,6 +54,7 @@ TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-
 INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
+###
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
@@ -62,6 +63,16 @@ TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox piratebox-mesh 
 INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
 endif
+###
+ifeq ($(INSTALL_TARGET),occupyhere)
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://xxxx/occupyhere_1.0_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=occupyhere_1.0_img.tar.gz
+TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+# Add additional packages to image build directly on root
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  
+IMAGEPREFIX:=$(INSTALL_TARGET)
+endif
+
 
 ####
 INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
