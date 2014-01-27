@@ -7,6 +7,7 @@ IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_bac
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
 IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
 
 #Is used for creation of the valid flag file for installer
 ## Which package should be installed later?
@@ -180,7 +181,7 @@ $(DL_FILE):
 
 $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	tar -xvjf $(DL_FILE) 
-	echo "src/gz piratebox http://beta.openwrt.piratebox.de/all/packages" >> $(IB_FOLDER)/repositories.conf
+	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IB_FOLDER)/repositories.conf
 
 $(VERSION_FILE): 
 	mkdir -p files/etc
