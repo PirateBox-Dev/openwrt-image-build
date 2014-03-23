@@ -20,6 +20,7 @@ $(DL_FILE):
 $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	tar -xvjf $(DL_FILE) 
 	echo "src/gz piratebox http://stable.openwrt.piratebox.de/all/packages" >> $(IB_FOLDER)/repositories.conf
+	mkdir -p $(IB_FOLDER)/dl 
 
 $(VERSION_FILE): 
 	mkdir -p files/etc
@@ -62,7 +63,7 @@ MR13U: TLMR13U openwrt-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
 
 WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin
 
-WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
+WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
 
 clean:
 	-rm -f $(MY_OPENWRT_TAG)
