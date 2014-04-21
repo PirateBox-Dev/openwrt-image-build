@@ -151,7 +151,7 @@ $(INSTALL_OPENWRT_IMAGE_FILE):
 cache_package_list:
 	cp -v $(IPKG_STATE_DIR)/lists/piratebox   $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
 	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
-	gzip -c  $(IPKG_STATE_DIR)/lists/imagebuilder  >  $(INSTALL_CACHE_FOLDER)/Package.gz_attitude_adjustment
+	gzip -c  $(IPKG_STATE_DIR)/lists/imagebuilder  >  $(INSTALL_CACHE_FOLDER)/Package.gz_main
 
 clean_installer:
 	- rm -rvf $(INSTALL_FOLDER)
