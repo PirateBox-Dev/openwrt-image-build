@@ -185,7 +185,7 @@ $(DL_FILE):
 	$(WGET) -c  -O $(DL_FILE) $(IMAGEBUILDER_URL)
 
 $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
-	tar -xvjf $(DL_FILE) 
+	pbzip2 -cd $(DL_FILE) | tar -xv || tar -xvjf $(DL_FILE)
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IB_FOLDER)/repositories.conf
 
 $(VERSION_FILE): 
