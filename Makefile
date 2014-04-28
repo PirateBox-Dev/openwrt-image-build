@@ -7,7 +7,8 @@ IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_bac
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
 IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
-IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://dev.openwrt.piratebox.de/all/packages
+FOLDER_PREFIX=./target_
 
 #Is used for creation of the valid flag file for installer
 ## Which package should be installed later?
@@ -50,21 +51,21 @@ ifeq ($(INSTALL_TARGET),piratebox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://beta.openwrt.piratebox.de/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna
-IMAGEPREFIX:=$(INSTALL_TARGET)
+INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=librarybox_2.0_img.tar.gz
+ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox piratebox-mesh 
-IMAGEPREFIX:=$(INSTALL_TARGET)
+INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
 endif
 
 ####
-INSTALL_ZIP:=$(HERE)/install_$(INSTALL_TARGET).zip
-INSTALL_FOLDER:=$(HERE)/install
+INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
+INSTALL_FOLDER:=$(HERE)/$(INSTALL_PREFIX)/install
 INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
@@ -154,17 +155,17 @@ cache_package_list:
 	gzip -c  $(IPKG_STATE_DIR)/lists/imagebuilder  >  $(INSTALL_CACHE_FOLDER)/Package.gz_main
 
 clean_installer:
-	- rm -rvf $(INSTALL_FOLDER)
-	- rm -rvf $(OPKG_INSTALL_DEST)
-	- sudo umount $(DEST_IMAGE_FOLDER)
-	- rm -rvf $(DEST_IMAGE_FOLDER)
-	- rm -v $(INSTALL_ZIP) ./install_*.zip
-	- rm -v $(SRC_IMAGE_UNPACKED)
-	- rm -v $(IMAGE_FILE)
-	- rm $(HERE)/opkg_log
+	-rm -rvf $(INSTALL_FOLDER)
+	-rm -rvf $(OPKG_INSTALL_DEST)
+	-sudo umount $(DEST_IMAGE_FOLDER)
+	-rm -rvf $(DEST_IMAGE_FOLDER)
+	-rm -rv $(FOLDER_PREFIX)* 
+	-rm -v $(SRC_IMAGE_UNPACKED)
+	-rm -v $(IMAGE_FILE)
+	-rm $(HERE)/opkg_log
 
 $(INSTALL_ZIP):
-	zip -r9 $@ install/
+	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
 
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF)  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
@@ -196,10 +197,11 @@ imagebuilder: $(IB_FOLDER)
 
 
 %.bin: 
-ifneq ($(IMAGEPREFIX),) 
-	cp $(IB_FOLDER)/bin/ar71xx/$@ ./$(INSTALL_TARGET)_$@
+ifneq ($(INSTALL_PREFIX),) 
+	mkdir -p $(INSTALL_PREFIX) 
+	cp $(IB_FOLDER)/bin/$(ARCH)/$@ $(INSTALL_PREFIX)/$@
 else
-	cp $(IB_FOLDER)/bin/ar71xx/$@ ./$@
+	cp $(IB_FOLDER)/bin/$(ARCH)/$@ ./$@
 endif
 
 TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 : parse_install_target
@@ -235,4 +237,4 @@ clean: clean_installer
 	-rm $(VERSION_FILE) $(INSTALLER_CONF)
 	-rm  -r $(IB_FOLDER)
 	-rm $(DL_FILE)
-	-rm openwrt-ar71xx-generic*
+	-rm openwrt-*
