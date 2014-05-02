@@ -7,7 +7,7 @@ IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_bac
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
 IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
-IMAGE_BUILD_REPOSITORY=http://dev.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
 FOLDER_PREFIX=./target_
 
 #Is used for creation of the valid flag file for installer
