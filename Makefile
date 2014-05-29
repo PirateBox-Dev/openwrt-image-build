@@ -7,7 +7,7 @@ IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_bac
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
 IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
-IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
 FOLDER_PREFIX=./target_
 
 #Is used for creation of the valid flag file for installer
@@ -48,7 +48,7 @@ endif
 parse_install_target:
 ifeq ($(INSTALL_TARGET),piratebox)
 #This has to be aligned with current piratebox version :(
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://beta.openwrt.piratebox.de/piratebox_ws_1.0_img.tar.gz"
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna
 INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
