@@ -229,7 +229,7 @@ MR13U: TLMR13U openwrt-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
 
 WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
-WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin
+WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-wr842n-v2-squashfs-sysupgrade.bin 
 
 WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
 
