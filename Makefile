@@ -89,11 +89,13 @@ OPKG:= \
 $(INSTALL_CACHE_FOLDER) $(INSTALL_FOLDER) $(OPKG_INSTALL_DEST):
 	mkdir -p $@
 
+# Obtain the OpenWRT image file
 $(IMAGE_FILE):
-	wget -c -O $@ $(IMAGE_DL_URL)
+	wget -c $(IMAGE_DL_URL) -O $@
 
+# Download the piratebox image file
 $(ADDITIONAL_PACKAGE_FILE):
-	wget -c -O $@ $(ADDITIONAL_PACKAGE_IMAGE_URL)
+	wget -c $(ADDITIONAL_PACKAGE_IMAGE_URL) -O $@
 
 $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
@@ -171,7 +173,7 @@ $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 
 # Download the imagebuilder file
 $(DL_FILE):
-	if [ ! -e $(DL_FILE) ]; then wget -c $(IMAGEBUILDER_URL) -O $(DL_FILE); fi;
+	wget -c $(IMAGEBUILDER_URL) -O $(DL_FILE)
 
 # Create the version file
 $(VERSION_FILE): 
