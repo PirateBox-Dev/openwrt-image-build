@@ -124,17 +124,7 @@ transfer_data_to_ext:
 umount_ext: 
 	sudo umount $(DEST_IMAGE_FOLDER)
 
-opkg_test:
-	cd $(IMAGE_BUILD_FOLDER) && \
-	$(OPKG) update && \
-	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
-	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IMAGE_BUILD_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
-
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
-	cd $(IMAGE_BUILD_FOLDER) && \
-	$(OPKG) update && \
-	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE)
-	# locally packages out of imagebuilder now
 	cd $(IMAGE_BUILD_FOLDER) && \
 	$(OPKG) update && \
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
@@ -143,10 +133,10 @@ create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 $(INSTALL_OPENWRT_IMAGE_FILE):
 	gzip -c $(SRC_IMAGE_UNPACKED) > $@
 
-##### Repository-Informations
+# Repository-Informations
+# On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 cache_package_list:
 	cp -v $(IPKG_STATE_DIR)/lists/piratebox $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
-	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 	gzip -c $(IPKG_STATE_DIR)/lists/imagebuilder > $(INSTALL_CACHE_FOLDER)/Package.gz_main
 
 $(INSTALL_ZIP):
