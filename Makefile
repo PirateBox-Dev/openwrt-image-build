@@ -17,8 +17,7 @@ FOLDER_PREFIX=./target_
 #Image configuration
 FILES_FOLDER=$(HERE)/files/
 ################  -minimum needed-
-GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe  
-
+GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
 
 #-----------------------------------------
 #  Stuff for Install.zip
@@ -44,9 +43,8 @@ else
 	$(parse_install_target)
 endif
 
-
 parse_install_target:
-ifeq ($(INSTALL_TARGET),piratebox)
+ifeq ($(INSTALL_TARGET), piratebox)
 #This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
@@ -59,7 +57,7 @@ ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img
 ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 # Add additional packages to image build directly on root
-GENERAL_PACKAGES:=$(GENERAL_PACKAGES)  usb-config-scripts-librarybox piratebox-mesh 
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-mesh
 INSTALL_PREFIX:=$(FOLDER_PREFIX)$(INSTALL_TARGET)
 endif
 
@@ -70,14 +68,14 @@ INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
- 
-INSTALL_REPOSITORY_CONF=$(HERE)/my_repositories.conf 
+
+INSTALL_REPOSITORY_CONF=$(HERE)/my_repositories.conf
 #
 
 REPOSITORY_CONF=$(IB_FOLDER)/repositories.conf
 OPKG_CACHE=$(IB_FOLDER)/dl
 OPKG_BIN=$(IB_FOLDER)/staging_dir/host/bin/opkg
-OPKG_WITHOUT_POSTINSTALL:=  \
+OPKG_WITHOUT_POSTINSTALL:= \
   IPKG_TMP=$(IPKG_TMP) \
   IPKG_INSTROOT=$(IPKG_INSTROOT) \
   IPKG_CONF_DIR=$(IPKG_CONF_DIR) \
@@ -119,11 +117,11 @@ $(INSTALLER_CONF):
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
-	gunzip  $(IMAGE_FILE) -c > $(SRC_IMAGE_UNPACKED)
-	sudo  mount -o loop,rw,sync $(SRC_IMAGE_UNPACKED)  $(DEST_IMAGE_FOLDER)
+	gunzip $(IMAGE_FILE) -c > $(SRC_IMAGE_UNPACKED)
+	sudo mount -o loop,rw,sync $(SRC_IMAGE_UNPACKED) $(DEST_IMAGE_FOLDER)
 
 transfer_data_to_ext:
-	sudo cp -rv --preserve=mode,links  $(OPKG_INSTALL_DEST)/* $(DEST_IMAGE_FOLDER)
+	sudo cp -rv --preserve=mode,links $(OPKG_INSTALL_DEST)/* $(DEST_IMAGE_FOLDER)
 
 umount_ext: 
 	sudo umount $(DEST_IMAGE_FOLDER)
@@ -131,35 +129,35 @@ umount_ext:
 opkg_test:
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext  --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log 
+	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 
-create_cache:  $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
+create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE)
 	# locally packages out of imagebuilder now
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext  --download-only install  $(TARGET_PACKAGE) > $(HERE)/opkg_log 
+	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 $(INSTALL_OPENWRT_IMAGE_FILE):
-	gzip -c  $(SRC_IMAGE_UNPACKED) > $@
+	gzip -c $(SRC_IMAGE_UNPACKED) > $@
 
 ##### Repository-Informations
 cache_package_list:
-	cp -v $(IPKG_STATE_DIR)/lists/piratebox   $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
+	cp -v $(IPKG_STATE_DIR)/lists/piratebox $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
 	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
-	gzip -c  $(IPKG_STATE_DIR)/lists/imagebuilder  >  $(INSTALL_CACHE_FOLDER)/Package.gz_main
+	gzip -c $(IPKG_STATE_DIR)/lists/imagebuilder > $(INSTALL_CACHE_FOLDER)/Package.gz_main
 
 clean_installer:
 	-rm -rvf $(INSTALL_FOLDER)
 	-rm -rvf $(OPKG_INSTALL_DEST)
 	-sudo umount $(DEST_IMAGE_FOLDER)
 	-rm -rvf $(DEST_IMAGE_FOLDER)
-	-rm -rv $(FOLDER_PREFIX)* 
+	-rm -rv $(FOLDER_PREFIX)*
 	-rm -v $(SRC_IMAGE_UNPACKED)
 	-rm -v $(IMAGE_FILE)
 	-rm $(HERE)/opkg_log
@@ -168,10 +166,10 @@ $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
 
 
-prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF)  mount_ext transfer_data_to_ext umount_ext  $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE) 
+prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
 ifeq ($(INSTALL_TARGET),piratebox)
 	wget http://wakaba.c3.cx/releases/$(KAREHA_RELEASE)
-	cp -v $(KAREHA_RELEASE)  $(INSTALL_FOLDER) 
+	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif 
 
 install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
@@ -183,7 +181,7 @@ install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
 
 
 $(DL_FILE):
-	$(WGET) -c  -O $(DL_FILE) $(IMAGEBUILDER_URL)
+	$(WGET) -c -O $(DL_FILE) $(IMAGEBUILDER_URL)
 
 $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	pbzip2 -cd $(DL_FILE) | tar -xv || tar -xvjf $(DL_FILE)
@@ -193,19 +191,18 @@ $(VERSION_FILE):
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
 
-imagebuilder: $(IB_FOLDER) 
-
+imagebuilder: $(IB_FOLDER)
 
 %.bin: 
-ifneq ($(INSTALL_PREFIX),) 
-	mkdir -p $(INSTALL_PREFIX) 
+ifneq ($(INSTALL_PREFIX),)
+	mkdir -p $(INSTALL_PREFIX)
 	cp $(IB_FOLDER)/bin/$(ARCH)/$@ $(INSTALL_PREFIX)/$@
 else
 	cp $(IB_FOLDER)/bin/$(ARCH)/$@ ./$@
 endif
 
 TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 : parse_install_target
-	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
+	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 ############## uncommented. We can reuse one until we need different packages
 #TLMR3040 : 
@@ -214,27 +211,55 @@ TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 : parse_insta
 #TLWR703 : 
 #	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
+all: \
+	imagebuilder \
+	MR3020 \
+	MR3040 \
+	MR10U \
+	MR11U \
+	MR13U \
+	WR703N \
+	WR842 \
+	WR1043 \
+	install_zip
 
-all: imagebuilder MR3020 MR3040 MR10U MR11U MR13U WR703N WR842 WR1043 install_zip 
+MR3020: \
+	TLMR3020 \
+	openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
-MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
+MR3040: \
+	TLMR3040 \
+	openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
+	openwrt-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
 
-MR3040: TLMR3040 openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
+MR10U: \
+	TLMR10U \
+	openwrt-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin
 
-MR10U: TLMR10U openwrt-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin
+MR11U: \
+	TLMR11U \
+	openwrt-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin \
+	openwrt-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin
 
-MR11U: TLMR11U openwrt-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin
+MR13U: \
+	TLMR13U \
+	openwrt-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
 
-MR13U: TLMR13U openwrt-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
+WR703N: \
+	TLWR703 \
+	openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
-WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
+WR842: \
+	TLWR842 \
+	openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin \
+	openwrt-ar71xx-generic-tl-wr842n-v2-squashfs-factory.bin
 
-WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-wr842n-v2-squashfs-factory.bin 
-
-WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
+WR1043: \
+	TLWR1043 \
+	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
 
 clean: clean_installer
 	-rm $(VERSION_FILE) $(INSTALLER_CONF)
-	-rm  -r $(IB_FOLDER)
+	-rm -r $(IB_FOLDER)
 	-rm $(DL_FILE)
 	-rm openwrt-*
