@@ -4,7 +4,6 @@ ARCH=ar71xx
 VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.1"
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
-WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
 IB_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
@@ -255,9 +254,9 @@ clean: clean_installer
 	rm -rf openwrt-*
 
 clean_installer:
+	if [ -e $(DEST_IMAGE_FOLDER) ]; then sudo umount $(DEST_IMAGE_FOLDER); fi;
 	rm -rf $(INSTALL_FOLDER)
 	rm -rf $(OPKG_INSTALL_DEST)
-	if [ -e $(DEST_IMAGE_FOLDER) ]; then sudo umount $(DEST_IMAGE_FOLDER); fi;
 	rm -rf $(DEST_IMAGE_FOLDER)
 	rm -rf $(FOLDER_PREFIX)*
 	rm -rf $(SRC_IMAGE_UNPACKED)
