@@ -35,14 +35,6 @@ EXT_FOLDER:=/prebuilt_ext/
 DEST_IMAGE_FOLDER=$(IB_FOLDER)/img_tmp
 OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 
-eval_install_zip:
-ifeq ($(INSTALL_TARGET),)
-	$(error "No INSTALL_TARGET set")
-else
-	- rm $(INSTALLER_CONF)
-	$(parse_install_target)
-endif
-
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
 #This has to be aligned with current piratebox version :(
@@ -132,7 +124,6 @@ opkg_test:
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IB_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
-
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IB_FOLDER) && \
 	$(OPKG) update && \
@@ -155,33 +146,39 @@ cache_package_list:
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
 
+# Prepare the installation zip
+install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
+
+eval_install_zip:
+ifeq ($(INSTALL_TARGET),)
+	$(error "No INSTALL_TARGET set")
+else
+	rm -rf $(INSTALLER_CONF)
+	$(parse_install_target)
+endif
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
-ifeq ($(INSTALL_TARGET),piratebox)
-	wget http://wakaba.c3.cx/releases/$(KAREHA_RELEASE)
+ifeq ($(INSTALL_TARGET), piratebox)
+	wget -nc http://wakaba.c3.cx/releases/$(KAREHA_RELEASE) -P $(KAREHA_RELEASE)
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif 
 
-install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
+# Prepare the image builder folder
+imagebuilder: $(IB_FOLDER)
 
-
-
-#-----------------------------------------
-
-
-
-$(DL_FILE):
-	$(WGET) -c -O $(DL_FILE) $(IMAGEBUILDER_URL)
-
+# Extract the image builder
 $(IB_FOLDER): $(DL_FILE) $(VERSION_FILE)
 	pbzip2 -cd $(DL_FILE) | tar -xv || tar -xvjf $(DL_FILE)
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IB_FOLDER)/repositories.conf
 
+# Download the imagebuilder file
+$(DL_FILE):
+	if [ ! -e $(DL_FILE) ]; then wget -c $(IMAGEBUILDER_URL) -O $(DL_FILE); fi;
+
+# Create the version file
 $(VERSION_FILE): 
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
-
-imagebuilder: $(IB_FOLDER)
 
 %.bin: 
 ifneq ($(INSTALL_PREFIX),)
@@ -251,6 +248,7 @@ WR1043: \
 distclean: clean
 	rm -rf $(DL_FILE)
 	rm -rf $(FILES_FOLDER)
+	rm -rf $(KAREHA_RELEASE)
 
 clean: clean_installer
 	rm -rf $(VERSION_FILE) $(INSTALLER_CONF)
