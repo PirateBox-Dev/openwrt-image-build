@@ -99,7 +99,6 @@ $(ADDITIONAL_PACKAGE_FILE):
 $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
-
 $(INSTALL_REPOSITORY_CONF):
 	grep src/gz $(REPOSITORY_CONF) > $@
 	sed 's|# src/gz|src/gz|' -i $@
@@ -159,7 +158,7 @@ endif
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
 ifeq ($(INSTALL_TARGET), piratebox)
-	wget -nc http://wakaba.c3.cx/releases/$(KAREHA_RELEASE) -P $(KAREHA_RELEASE)
+	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif 
 
