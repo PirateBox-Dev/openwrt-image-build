@@ -1,43 +1,44 @@
+# OpenWRT image build
 Scripts for creating PirateBox Images via OpenWRT's ImageBuilder
 
-make all 
+## Make targets
+    make all
 
 or
 
-make imagebuilder
-make MR3020 
+    make imagebuilder
+    make MR3020
 
 
-If an install_target wants or has specific needs on images already installed packages on the root, you can/have to run
+If an install_target wants or has specific needs on images already installed packages on the root, you have to run
 
-make MR3020 INSTALL_TARGET=librarybox
+    make MR3020 INSTALL_TARGET=librarybox
 
-That results in a customized image containing additional packages. The customized images get an extra prefix to its name.
+The results in a customized image containing additional packages. The customized images gets an extra prefix to to indicate this.
 
 
-If you want to create a install.zip for a offline installtion, you have to run 
+If you want to create a __install.zip__ for offline installtion, you have to run: 
 
-make imagebuilder
-make MR3020
+    make imagebuilder
+    make MR3020
 
-and then the final command ist
+and then finaly:
 
-make install_zip INSTALL_TARGET="piratebox"
+    make install_zip INSTALL_TARGET="piratebox"
 
-(that results an install_piratebox.zip)
+which will result in an archive called __install_piratebox.zip__
 
-Currently available INSTALL_TARGETs:
+## Available install targets
 
-   - piratebox  - for  install_zip  (Basic PirateBox)
-   - librarybox  - install_zip & image 
+* _piratebox_:     
+Creates install_zip (Basic PirateBox)
+* _librarybox_:     
+Creates rinstall_zip & image 
 
-The imagebuilder refers to the first PirateBox-OpenWRT-Packagerepository under: 
-http://stable.openwrt.piratebox.de/all/packages/
+The imagebuilder refers to the first PirateBox-OpenWRT-Package repository under: 
+* http://stable.openwrt.piratebox.de/all/packages/
 
 During customization, the package pbxopg gets installed. This package is located at the 
 repository above and modifies opkg.conf at the final image to use that repository too.
 
-
-See our repository for that too: https://github.com/PirateBox-Dev/openwrt-temp-repository
-
-
+For further information check out the [OpenWRT temp repository](https://github.com/PirateBox-Dev/openwrt-temp-repository)
