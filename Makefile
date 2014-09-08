@@ -66,9 +66,6 @@ INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
 
-INSTALL_REPOSITORY_CONF=$(HERE)/my_repositories.conf
-#
-
 REPOSITORY_CONF=$(IMAGE_BUILD_FOLDER)/repositories.conf
 OPKG_CACHE=$(IMAGE_BUILD_FOLDER)/dl
 OPKG_BIN=$(IMAGE_BUILD_FOLDER)/staging_dir/host/bin/opkg
@@ -105,10 +102,6 @@ $(ADDITIONAL_PACKAGE_FILE):
 
 $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
-
-$(INSTALL_REPOSITORY_CONF):
-	grep src/gz $(REPOSITORY_CONF) > $@
-	sed 's|# src/gz|src/gz|' -i $@
 
 $(INSTALLER_CONF):
 	echo $(TARGET_PACKAGE) > $@
@@ -253,7 +246,7 @@ clean: clean_installer
 	rm -rf openwrt-*
 
 clean_installer:
-	if [ -e $(DEST_IMAGE_FOLDER) ]; then sudo umount $(DEST_IMAGE_FOLDER); fi;
+	if mount | grep $(DEST_IMAGE_FOLDER) > /dev/null; then sudo umount $(DEST_IMAGE_FOLDER); fi;
 	rm -rf $(INSTALL_FOLDER)
 	rm -rf $(OPKG_INSTALL_DEST)
 	rm -rf $(DEST_IMAGE_FOLDER)
