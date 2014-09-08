@@ -253,16 +253,16 @@ distclean: clean
 	rm -rf $(FILES_FOLDER)
 
 clean: clean_installer
-	-rm $(VERSION_FILE) $(INSTALLER_CONF)
-	-rm -r $(IB_FOLDER)
-	-rm openwrt-*
+	rm -rf $(VERSION_FILE) $(INSTALLER_CONF)
+	rm -rf $(IB_FOLDER)
+	rm -rf openwrt-*
 
 clean_installer:
-	-rm -rvf $(INSTALL_FOLDER)
-	-rm -rvf $(OPKG_INSTALL_DEST)
-	-sudo umount $(DEST_IMAGE_FOLDER)
-	-rm -rvf $(DEST_IMAGE_FOLDER)
-	-rm -rv $(FOLDER_PREFIX)*
-	-rm -v $(SRC_IMAGE_UNPACKED)
-	-rm -v $(IMAGE_FILE)
-	-rm $(HERE)/opkg_log
+	rm -rf $(INSTALL_FOLDER)
+	rm -rf $(OPKG_INSTALL_DEST)
+	if [ -e $(DEST_IMAGE_FOLDER) ]; then sudo umount $(DEST_IMAGE_FOLDER); fi;
+	rm -rf $(DEST_IMAGE_FOLDER)
+	rm -rf $(FOLDER_PREFIX)*
+	rm -rf $(SRC_IMAGE_UNPACKED)
+	rm -rf $(IMAGE_FILE)
+	rm -rf $(HERE)/opkg_log
