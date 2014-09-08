@@ -19,14 +19,13 @@ IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 # * piratebox
 TARGET_FOLDER_PREFIX=./target_
 
-#Image configuration
+# Image configuration
 FILES_FOLDER=$(HERE)/files/
-################  -minimum needed-
+
+# Minimum dependencies
 GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
 
-#-----------------------------------------
-#  Stuff for Install.zip
-#
+# Install.zip related configuration
 IPKG_TMP:=$(IMAGE_BUILD_FOLDER)/tmp/ipkgtmp
 IPKG_INSTROOT:=$(IMAGE_BUILD_FOLDER)/build_dir/target-mips_r2_uClibc-0.9.33.2/root-$(ARCH)
 IPKG_CONF_DIR:=$(IMAGE_BUILD_FOLDER)/tmp
@@ -40,9 +39,9 @@ EXT_FOLDER:=/prebuilt_ext/
 DEST_IMAGE_FOLDER=$(IMAGE_BUILD_FOLDER)/img_tmp
 OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 
+# This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-#This has to be aligned with current piratebox version :(
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna
@@ -58,7 +57,6 @@ GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-me
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 endif
 
-####
 INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
 INSTALL_FOLDER:=$(HERE)/$(INSTALL_PREFIX)/install
 INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
