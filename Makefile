@@ -152,16 +152,6 @@ cache_package_list:
 	#On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 	gzip -c $(IPKG_STATE_DIR)/lists/imagebuilder > $(INSTALL_CACHE_FOLDER)/Package.gz_main
 
-clean_installer:
-	-rm -rvf $(INSTALL_FOLDER)
-	-rm -rvf $(OPKG_INSTALL_DEST)
-	-sudo umount $(DEST_IMAGE_FOLDER)
-	-rm -rvf $(DEST_IMAGE_FOLDER)
-	-rm -rv $(FOLDER_PREFIX)*
-	-rm -v $(SRC_IMAGE_UNPACKED)
-	-rm -v $(IMAGE_FILE)
-	-rm $(HERE)/opkg_log
-
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
 
@@ -258,8 +248,21 @@ WR1043: \
 	TLWR1043 \
 	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
 
+distclean: clean
+	rm -rf $(DL_FILE)
+	rm -rf $(FILES_FOLDER)
+
 clean: clean_installer
 	-rm $(VERSION_FILE) $(INSTALLER_CONF)
 	-rm -r $(IB_FOLDER)
-	-rm $(DL_FILE)
 	-rm openwrt-*
+
+clean_installer:
+	-rm -rvf $(INSTALL_FOLDER)
+	-rm -rvf $(OPKG_INSTALL_DEST)
+	-sudo umount $(DEST_IMAGE_FOLDER)
+	-rm -rvf $(DEST_IMAGE_FOLDER)
+	-rm -rv $(FOLDER_PREFIX)*
+	-rm -v $(SRC_IMAGE_UNPACKED)
+	-rm -v $(IMAGE_FILE)
+	-rm $(HERE)/opkg_log
