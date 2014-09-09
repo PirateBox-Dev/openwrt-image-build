@@ -9,7 +9,6 @@ or
     make imagebuilder
     make MR3020
 
-
 If an install_target wants or has specific needs on images already installed packages on the root, you have to run
 
     make MR3020 INSTALL_TARGET=librarybox
@@ -27,6 +26,17 @@ and then finaly:
     make install_zip INSTALL_TARGET="piratebox"
 
 which will result in an archive called __install_piratebox.zip__
+
+## Cleanup
+You can either run:
+    
+    make clean
+    
+to get rid of all build related files, except files that were downloaded during this build, or
+
+    make distclean
+    
+which will delete all files and directories that were created during the build process.
 
 ## Available install targets
 
