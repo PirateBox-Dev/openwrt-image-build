@@ -3,7 +3,7 @@ ARCH=ar71xx
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.1"
+VERSION_TAG="PBX_auto_Image_2.2"
 
 # Imagebuilder related configuration
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
