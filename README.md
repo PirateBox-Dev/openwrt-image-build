@@ -23,7 +23,7 @@ If you want to create a __install.zip__ for offline installtion, you have to run
 
 and then finaly:
 
-    make install_zip INSTALL_TARGET="piratebox"
+    make install_zip INSTALL_TARGET=piratebox
 
 which will result in an archive called __install_piratebox.zip__
 
