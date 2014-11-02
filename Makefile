@@ -3,7 +3,7 @@ ARCH=ar71xx
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.3"
+VERSION_TAG="PBX_auto_Image_2.3.1"
 
 # Imagebuilder related configuration
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
@@ -45,7 +45,7 @@ ifeq ($(INSTALL_TARGET), piratebox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
-AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus\n extendRoot-piratebox piratebox-mod-imageboard\n extendRoot-minidlna"
+AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus\n extendRoot-piratebox\n piratebox-mod-imageboard\n extendRoot-minidlna"
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
