@@ -3,7 +3,7 @@ ARCH=ar71xx
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.2"
+VERSION_TAG="PBX_auto_Image_2.3"
 
 # Imagebuilder related configuration
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
@@ -42,9 +42,10 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
-TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
+AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus\n extendRoot-piratebox piratebox-mod-imageboard\n extendRoot-minidlna"
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
@@ -52,6 +53,7 @@ ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-mesh
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
@@ -102,7 +104,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	echo -e  $(TARGET_PACKAGE) > $@
+	echo -e  $(AUTO_PACKAGE_ORDER) > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
