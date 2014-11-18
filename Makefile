@@ -28,7 +28,7 @@ imagebuilder: $(IB_FOLDER)
 %.bin: 
 	cp $(IB_FOLDER)/bin/ar71xx/$@ ./
 
-TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
+GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
 	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 ############## uncommented. We can reuse one until we need different packages
@@ -39,7 +39,9 @@ TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
 #	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 
-all: imagebuilder MR3020 MR3040 MR10U MR11U MR13U WR703N WR842 WR1043
+all: imagebuilder INET MR3020 MR3040 MR10U MR11U MR13U WR703N WR842 WR1043
+
+INET: GLINET openwrt-ar71xx-generic-gl-inet-v1-squashfs-factory.bin
 
 MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
