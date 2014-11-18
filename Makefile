@@ -55,7 +55,7 @@ WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
 WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin
 
-WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
+WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
 
 clean:
 	-rm $(VERSION_FILE)
