@@ -178,7 +178,7 @@ else
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
 endif
 
-TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_install_target
+GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -191,6 +191,7 @@ TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_instal
 
 all: \
 	imagebuilder \
+	INET \
 	MR3020 \
 	MR3040 \
 	MR10U \
@@ -200,6 +201,10 @@ all: \
 	WR842 \
 	WR1043 \
 	install_zip
+
+INET: \
+	GLINET \
+	openwrt-ar71xx-generic-gl-inet-v1-squashfs-factory.bin
 
 MR3020: \
 	TLMR3020 \
