@@ -102,7 +102,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	echo -e  $(TARGET_PACKAGE) > $@
+	printf '%b\n' "$(TARGET_PACKAGE)" > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
