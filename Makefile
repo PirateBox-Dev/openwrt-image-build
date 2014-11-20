@@ -1,9 +1,9 @@
 VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_Image_2.0"
-IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-opkg618-fw2-ar71xx_generic-for-linux-i486.tar.bz2"
+IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2.1/OpenWrt-ImageBuilder-opkg618-fw2-ar71xx_generic-for-linux-x86_64.tar.bz2"
 WGET=wget
 DL_FILE="ImageBuilder.tar.bz2"
-IB_FOLDER=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-i486
+IB_FOLDER=OpenWrt-ImageBuilder-ar71xx_generic-for-linux-x86_64
 
 
 #Image configuration
@@ -28,7 +28,7 @@ imagebuilder: $(IB_FOLDER)
 %.bin: 
 	cp $(IB_FOLDER)/bin/ar71xx/$@ ./
 
-TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
+GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
 	cd $(IB_FOLDER)  &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 ############## uncommented. We can reuse one until we need different packages
@@ -39,7 +39,9 @@ TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 :
 #	cd $(IB_FOLDER) &&	make image PROFILE="$@" PACKAGES=$(GENERAL_PACKAGES) FILES=$(FILES_FOLDER)
 
 
-all: imagebuilder MR3020 MR3040 MR10U MR11U MR13U WR703N WR842 WR1043
+all: imagebuilder INET MR3020 MR3040 MR10U MR11U MR13U WR703N WR842 WR1043
+
+INET: GLINET openwrt-ar71xx-generic-gl-inet-v1-squashfs-factory.bin
 
 MR3020: TLMR3020 openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
@@ -55,7 +57,7 @@ WR703N: TLWR703 openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
 WR842: TLWR842 openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin
 
-WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
+WR1043: TLWR1043 openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
 
 clean:
 	-rm $(VERSION_FILE)
