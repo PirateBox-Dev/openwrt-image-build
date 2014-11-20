@@ -6,11 +6,11 @@ VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.2"
 
 # Imagebuilder related configuration
-IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
+IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2.1/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
 IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
-IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
+IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64
 
 # Prefix for the installer directory
 #
@@ -102,7 +102,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	echo -e  $(TARGET_PACKAGE) > $@
+	printf '%b\n' "$(TARGET_PACKAGE)" > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
@@ -175,7 +175,7 @@ else
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
 endif
 
-TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_install_target
+GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -188,6 +188,7 @@ TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043: parse_instal
 
 all: \
 	imagebuilder \
+	INET \
 	MR3020 \
 	MR3040 \
 	MR10U \
@@ -197,6 +198,10 @@ all: \
 	WR842 \
 	WR1043 \
 	install_zip
+
+INET: \
+	GLINET \
+	openwrt-ar71xx-generic-gl-inet-v1-squashfs-factory.bin
 
 MR3020: \
 	TLMR3020 \
@@ -231,7 +236,8 @@ WR842: \
 
 WR1043: \
 	TLWR1043 \
-	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin
+	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin \
+	openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
 
 distclean: clean
 	rm -rf $(IMAGE_BUILDER_FILE)
