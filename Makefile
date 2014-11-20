@@ -9,7 +9,7 @@ VERSION_TAG="PBX_auto_Image_2.3.2"
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
-IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://development.piratebox.de/all/packages
 IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-i486
 
 # Prefix for the installer directory
@@ -105,7 +105,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	/bin/echo -e  $(AUTO_PACKAGE_ORDER) > $@
+	 printf "%b\n"  $(AUTO_PACKAGE_ORDER) > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
