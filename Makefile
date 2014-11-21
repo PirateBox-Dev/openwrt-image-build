@@ -105,7 +105,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	 printf '%b\n'  $(AUTO_PACKAGE_ORDER) > $@
+	 printf '%b\n' "$(AUTO_PACKAGE_ORDER)" > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
