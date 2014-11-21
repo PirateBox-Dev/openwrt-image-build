@@ -118,7 +118,7 @@ umount_ext:
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
 	cd $(IMAGE_BUILD_FOLDER) && \
 	$(OPKG) update && \
-	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) > $(HERE)/opkg_log
+	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) | tee $(HERE)/opkg_log
 	grep file\:packages $(HERE)/opkg_log | sed 's|Downloading file\:||' | sed 's|.ipk.|.ipk|' | xargs -I {} cp -v $(IMAGE_BUILD_FOLDER)/{} $(INSTALL_CACHE_FOLDER)
 
 $(INSTALL_OPENWRT_IMAGE_FILE):
