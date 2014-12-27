@@ -175,7 +175,7 @@ else
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
 endif
 
-GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR842 TLWR1043 TLWDR4300: parse_install_target
+GLINET TLMR3020 TLMR3040 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -195,7 +195,9 @@ all: \
 	MR11U \
 	MR13U \
 	WR703N \
+	WR710 \
 	WR842 \
+	WR2543 \
 	WR1043 \
 	WDR4300 \
 	install_zip
@@ -230,6 +232,10 @@ WR703N: \
 	TLWR703 \
 	openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
+WR710: \
+	TLWR710 \
+	openwrt-ar71xx-generic-tl-wr710n-v1-squashfs-factory.bin
+
 WR842: \
 	TLWR842 \
 	openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin \
@@ -239,6 +245,10 @@ WR1043: \
 	TLWR1043 \
 	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin \
 	openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
+
+WR2543: \
+	TLWR2543 \
+	openwrt-ar71xx-generic-tl-wr2543-v1-squashfs-factory.bin
 
 WDR4300: \
 	TLWDR4300 \
