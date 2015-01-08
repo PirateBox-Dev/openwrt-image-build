@@ -46,7 +46,7 @@ ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_imag
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
-AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus\n extendRoot-piratebox\n piratebox-mod-imageboard\n extendRoot-minidlna"
+AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
