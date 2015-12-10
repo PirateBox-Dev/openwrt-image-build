@@ -3,7 +3,7 @@ ARCH=ar71xx
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.2"
+VERSION_TAG="PBX_auto_Image_2.3"
 
 # Imagebuilder related configuration
 IMAGEBUILDER_URL="https://github.com/FriedZombie/OpenWrt_Attitude-Adjustment_backports/releases/download/V0.2.1/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
@@ -49,8 +49,8 @@ INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.1_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE=librarybox_2.1_img.tar.gz
 TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-mesh
