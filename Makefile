@@ -51,9 +51,9 @@ endif
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.1_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.1_img.tar.gz
-TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna
 # Add additional packages to image build directly on root
-GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-mesh extendRoot-minidlna
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox piratebox-mesh
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 endif
 
