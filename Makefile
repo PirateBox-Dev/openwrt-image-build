@@ -132,6 +132,7 @@ cache_package_list:
 
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
+	cd $(INSTALL_PREFIX) && sha256sum ` basename $@ `   > $@.sha256
 
 # Prepare the installation zip
 install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
@@ -171,8 +172,10 @@ $(VERSION_FILE):
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ $(INSTALL_PREFIX)/$@
+	cd $(INSTALL_PREFIX) && sha256sum $@ > $@.sha256
 else
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
+	sha256sum $@ > $@.sha256
 endif
 
 GLINET TLMR3020 TLMR3040 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
