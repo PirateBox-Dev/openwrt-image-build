@@ -253,7 +253,8 @@ WR842: \
 WR1043: \
 	TLWR1043 \
 	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin
+	openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin \
+	openwrt-ar71xx-generic-tl-wr1043nd-v3-squashfs-factory.bin
 
 WR2543: \
 	TLWR2543 \
