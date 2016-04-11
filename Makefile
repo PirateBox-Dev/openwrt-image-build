@@ -178,7 +178,7 @@ else
 	sha256sum $@ > $@.sha256
 endif
 
-GL_AR150 GLINET TLMR3020 TLMR3040 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
+GL_AR150 GLINET TLMR3020 TLMR3040 TLMR3220 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -195,6 +195,7 @@ all: \
 	INET \
 	MR3020 \
 	MR3040 \
+	MR3220 \
 	MR3420 \
 	MR10U \
 	MR11U \
@@ -223,6 +224,10 @@ MR3040: \
 	TLMR3040 \
 	openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
 	openwrt-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
+
+MR3220: \
+	TLMR3220 \
+	openwrt-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin 
 
 MR3420: \
 	TLMR3420 \
