@@ -9,7 +9,7 @@ VERSION_TAG="PBX_auto_Image_2.4"
 IMAGEBUILDER_URL="http://212.223.29.116/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
-IMAGE_BUILD_REPOSITORY=http://development.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
 IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64
 
 # Prefix for the installer directory
