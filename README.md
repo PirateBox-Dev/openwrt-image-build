@@ -7,11 +7,11 @@ Scripts for creating PirateBox Images via OpenWRT's ImageBuilder
 or
 
     make imagebuilder
-    make MR3020
+    make ZSUN
 
 If an install_target wants or has specific needs on images already installed packages on the root, you have to run
 
-    make MR3020 INSTALL_TARGET=librarybox
+    make ZSUN INSTALL_TARGET=librarybox
 
 The results in a customized image containing additional packages. The customized images gets an extra prefix to to indicate this.
 
@@ -19,7 +19,7 @@ The results in a customized image containing additional packages. The customized
 If you want to create a __install.zip__ for offline installtion, you have to run: 
 
     make imagebuilder
-    make MR3020
+    make ZSUN
 
 and then finaly:
 
