@@ -6,11 +6,11 @@ VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.4"
 
 # Imagebuilder related configuration
-IMAGEBUILDER_URL="http://212.223.29.116/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
+IMAGEBUILDER_URL="http://68.35.1.13/OpenWrt-ImageBuilder-$(ARCH)-generic.Linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
-IMAGE_BUILD_REPOSITORY=http://development.piratebox.de/all/packages
-IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all
+IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)-generic.Linux-x86_64
 
 # Prefix for the installer directory
 #
@@ -23,7 +23,7 @@ TARGET_FOLDER_PREFIX=./target_
 FILES_FOLDER=$(HERE)/files/
 
 # Minimum dependencies
-GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
+GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 kmod-fs-isofs block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
 
 # Install.zip related configuration
 IPKG_TMP:=$(IMAGE_BUILD_FOLDER)/tmp/ipkgtmp
@@ -42,8 +42,8 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://beta.openwrt.piratebox.de/piratebox-ws_1.1.0.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox-ws_1.1.0.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
 AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
@@ -51,9 +51,9 @@ INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE=librarybox_2.0_img.tar.gz
-TARGET_PACKAGE="extendRoot-$(INSTALL_TARGET)"
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.1_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE=librarybox_2.1_img.tar.gz
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna
 AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
@@ -135,6 +135,7 @@ cache_package_list:
 
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
+	cd $(INSTALL_PREFIX) && sha256sum ` basename $@ `   > $@.sha256
 
 # Prepare the installation zip
 install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
@@ -174,11 +175,13 @@ $(VERSION_FILE):
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ $(INSTALL_PREFIX)/$@
+	cd $(INSTALL_PREFIX) && sha256sum $@ > $@.sha256
 else
 	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
+	sha256sum $@ > $@.sha256
 endif
 
-GL_AR150 GLINET TLMR3020 TLMR3040 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
+GL_AR150 GLINET TLMR3020 TLMR3040 TLMR3220 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300 ZSUNSDREADER: parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -195,6 +198,7 @@ all: \
 	INET \
 	MR3020 \
 	MR3040 \
+	MR3220 \
 	MR3420 \
 	MR10U \
 	MR11U \
@@ -205,6 +209,7 @@ all: \
 	WR2543 \
 	WR1043 \
 	WDR4300 \
+	ZSUN \
 	install_zip
 
 INET: \
@@ -223,6 +228,10 @@ MR3040: \
 	TLMR3040 \
 	openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
 	openwrt-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
+
+MR3220: \
+	TLMR3220 \
+	openwrt-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin 
 
 MR3420: \
 	TLMR3420 \
@@ -268,6 +277,10 @@ WR2543: \
 WDR4300: \
 	TLWDR4300 \
 	openwrt-ar71xx-generic-tl-wdr4300-v1-squashfs-factory.bin
+
+ZSUN: \
+	ZSUNSDREADER \
+	openwrt-ar71xx-generic-zsun-sdreader-squashfs-sysupgrade.bin
 
 distclean: clean
 	rm -rf $(IMAGE_BUILDER_FILE)
