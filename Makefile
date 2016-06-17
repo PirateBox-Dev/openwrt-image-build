@@ -9,7 +9,7 @@ VERSION_TAG="PBX_auto_Image_2.4"
 IMAGEBUILDER_URL="http://68.35.1.13/OpenWrt-ImageBuilder-$(ARCH)-generic.Linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
-IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all
 IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)-generic.Linux-x86_64
 
 # Prefix for the installer directory
@@ -42,7 +42,7 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://beta.openwrt.piratebox.de/piratebox-ws_1.1.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
@@ -280,7 +280,7 @@ WDR4300: \
 
 ZSUN: \
 	ZSUNSDREADER \
-	openwrt-ar71xx-generic-zsun-sdreader-squashfs-factory.bin
+	openwrt-ar71xx-generic-zsun-sdreader-squashfs-sysupgrade.bin
 
 distclean: clean
 	rm -rf $(IMAGE_BUILDER_FILE)
