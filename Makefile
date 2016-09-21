@@ -9,7 +9,7 @@ VERSION_TAG="PBX_auto_Image_2.4"
 IMAGEBUILDER_URL="http://212.223.29.116/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
-IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY=http://beta.openwrt.piratebox.de/all/packages
 IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64
 
 # Prefix for the installer directory
@@ -42,9 +42,11 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.0_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.0_img.tar.gz
-TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
+AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
@@ -52,6 +54,7 @@ ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.1_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.1_img.tar.gz
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna
+AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
@@ -102,7 +105,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 	cp -v $(ADDITIONAL_PACKAGE_FILE) $@
 
 $(INSTALLER_CONF):
-	printf '%b\n' "$(TARGET_PACKAGE)" > $@
+	 printf '%b\n' "$(AUTO_PACKAGE_ORDER)" > $@
 
 mount_ext: 
 	mkdir -p $(DEST_IMAGE_FOLDER)
