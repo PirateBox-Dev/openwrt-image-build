@@ -180,7 +180,7 @@ $(VERSION_FILE):
 	echo $(VERSION_TAG) > $@
 
 %.bin:  parse_install_target
-	echo "$@" | sed -e 's|lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
+	echo "$@" | sed -e 's|lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
@@ -222,69 +222,63 @@ all: \
 	install_zip
 
 INET: \
-	GLINET \
-	openwrt-ar71xx-generic-gl-inet-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-inet-6408A-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-inet-6416A-v1-squashfs-factory.bin
+
 
 GLAR150: \
-	GL_AR150 \
-	openwrt-ar71xx-generic-gl-ar150-squashfs-sysupgrade.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar150-squashfs-sysupgrade.bin
 
 MR3020: \
-	lede-17.01.1-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
 MR3040: \
-	TLMR3040 \
-	openwrt-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin 
 
 MR3220: \
-	TLMR3220 \
-	openwrt-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3220-v2-squashfs-factory.bin 
 
 MR3420: \
-	TLMR3420 \
-	openwrt-ar71xx-generic-tl-mr3420-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3420-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin 
 
 MR10U: \
-	TLMR10U \
-	openwrt-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin 
 
 MR11U: \
-	TLMR11U \
-	openwrt-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin 
 
 MR13U: \
-	TLMR13U \
-	openwrt-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
 
 WR703N: \
-	TLWR703 \
-	openwrt-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
 
 WR710: \
-	TLWR710 \
-	openwrt-ar71xx-generic-tl-wr710n-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr710n-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr710n-v2-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr710n-v2.1-squashfs-factory.bin
 
 WR842: \
-	TLWR842 \
-	openwrt-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-wr842n-v2-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr842n-v1-squashfs-factory.bin\
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr842n-v2-squashfs-factory.bin\
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr842n-v3-squashfs-factory.bin
 
 WR1043: \
-	TLWR1043 \
-	openwrt-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin \
-	openwrt-ar71xx-generic-tl-wr1043nd-v3-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr1043nd-v1-squashfs-factory.bin\
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr1043nd-v2-squashfs-factory.bin\
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr1043nd-v3-squashfs-factory.bin\
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr1043nd-v4-squashfs-factory.bin
 
 WR2543: \
-	TLWR2543 \
-	openwrt-ar71xx-generic-tl-wr2543-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr2543-v1-squashfs-factory.bin
 
 WDR4300: \
-	TLWDR4300 \
-	openwrt-ar71xx-generic-tl-wdr4300-v1-squashfs-factory.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wdr4300-v1-squashfs-factory.bin \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wdr4300-v1-il-squashfs-factory.bin
 
 distclean: clean
 	rm -rf $(IMAGE_BUILDER_FILE)
