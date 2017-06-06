@@ -1,16 +1,22 @@
 HERE:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
-ARCH=ar71xx
+TARGET=ar71xx
+TARGET_TYPE=generic
+ARCH=mips_24kc
+ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.4"
+VERSION_TAG="PBX_auto_Image_2.5"
 
 # Imagebuilder related configuration
-IMAGEBUILDER_URL="http://212.223.29.116/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
-IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
+LEDE_VERSION=17.01.1
+IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64.tar.xz"
+IMAGE_BUILDER_FILE="ImageBuilder.tar.xz"
 
-IMAGE_BUILD_REPOSITORY=http://development.piratebox.de/all/packages
-IMAGE_BUILD_FOLDER=$(HERE)/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64
+
+
+IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/packages
+IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 
 # Prefix for the installer directory
 #
@@ -23,11 +29,12 @@ TARGET_FOLDER_PREFIX=./target_
 FILES_FOLDER=$(HERE)/files/
 
 # Minimum dependencies
-GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat  kmod-ipv6 zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
+#GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
+GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 kmod-loop losetup kmod-batman-adv kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables zlib iw swap-utils -ppp -ppp-mod-pppoe
 
 # Install.zip related configuration
 IPKG_TMP:=$(IMAGE_BUILD_FOLDER)/tmp/ipkgtmp
-IPKG_INSTROOT:=$(IMAGE_BUILD_FOLDER)/build_dir/target-mips_r2_uClibc-0.9.33.2/root-$(ARCH)
+IPKG_INSTROOT:=$(IMAGE_BUILD_FOLDER)/build_dir/target-$(ARCH_BUILDROOT)/root-$(TARGET)
 IPKG_CONF_DIR:=$(IMAGE_BUILD_FOLDER)/tmp
 IPKG_OFFLINE_ROOT:=$(IPKG_INSTROOT)
 IPKG_STATE_DIR=$(IPKG_OFFLINE_ROOT)/usr/lib/opkg
@@ -119,6 +126,7 @@ umount_ext:
 	sudo umount $(DEST_IMAGE_FOLDER)
 
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
+	mkdir -p "$(IPKG_CONF_DIR)"
 	cd $(IMAGE_BUILD_FOLDER) && \
 	$(OPKG) update && \
 	$(OPKG) -d ext --download-only install $(TARGET_PACKAGE) | tee $(HERE)/opkg_log
@@ -159,7 +167,7 @@ imagebuilder: $(IMAGE_BUILD_FOLDER)
 
 # Extract the image builder
 $(IMAGE_BUILD_FOLDER): $(IMAGE_BUILDER_FILE) $(VERSION_FILE)
-	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -xv || tar -xvjf $(IMAGE_BUILDER_FILE)
+	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -xv || tar -xvf $(IMAGE_BUILDER_FILE) 
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IMAGE_BUILD_FOLDER)/repositories.conf
 
 # Download the imagebuilder file
@@ -171,17 +179,19 @@ $(VERSION_FILE):
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
 
-%.bin: 
+%.bin:  parse_install_target
+	echo "$@" | sed -e 's|lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
+	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
-	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ $(INSTALL_PREFIX)/$@
+	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ $(INSTALL_PREFIX)/$@
 	cd $(INSTALL_PREFIX) && sha256sum $@ > $@.sha256
 else
-	cp $(IMAGE_BUILD_FOLDER)/bin/$(ARCH)/$@ ./$@
+	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ ./$@
 	sha256sum $@ > $@.sha256
 endif
 
-GL_AR150 GLINET TLMR3020 TLMR3040 TLMR3220 TLMR3420 TLMR10U TLMR11U TLMR13U TLWR703 TLWR710 TLWR842 TLWR1043 TLWR2543 TLWDR4300: parse_install_target
+gl-ar150 gl-inet-6408A-v1 gl-inet-6416A-v1 tl-mr3020-v1 tl-mr3040-v1 tl-mr3040-v2 tl-mr10u-v1 tl-mr11u-v1 tl-mr11u-v2 tl-mr13u-v1 tl-mr3220-v1 tl-mr3220-v2 tl-mr3420-v1 tl-mr3420-v2 tl-wdr4300-v1 tl-wdr4300-v1-il tl-wr1043nd-v1 tl-wr1043nd-v2 tl-wr1043nd-v3 tl-wr1043nd-v4 tl-wr2543-v1 tl-wr703n-v1 tl-wr710n-v1 tl-wr710n-v2 tl-wr710n-v2.1 tl-wr842n-v1 tl-wr842n-v2 tl-wr842n-v3 : parse_install_target
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$@" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 
 # We can reuse one until we need different packages
@@ -220,8 +230,7 @@ GLAR150: \
 	openwrt-ar71xx-generic-gl-ar150-squashfs-sysupgrade.bin
 
 MR3020: \
-	TLMR3020 \
-	openwrt-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
+	lede-17.01.1-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
 MR3040: \
 	TLMR3040 \
@@ -285,7 +294,7 @@ distclean: clean
 clean: clean_installer
 	rm -rf $(VERSION_FILE) $(INSTALLER_CONF)
 	rm -rf $(IMAGE_BUILD_FOLDER)
-	rm -rf openwrt-*
+	rm -rf lede-*
 
 clean_installer:
 	if mount | grep $(DEST_IMAGE_FOLDER) > /dev/null; then sudo umount $(DEST_IMAGE_FOLDER); fi;
