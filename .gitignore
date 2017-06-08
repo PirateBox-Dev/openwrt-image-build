@@ -1,6 +1,7 @@
 files/etc/pbx_custom_image
-ImageBuilder.tar.bz2
+ImageBuilder.tar.*
 OpenWrt-ImageBuilder-ar71xx_generic-for-linux-*
+lede-*
 OpenWRT.img
 OpenWRT.img.gz
 install*
