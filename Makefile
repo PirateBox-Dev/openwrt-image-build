@@ -57,7 +57,6 @@ ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
 AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
-INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
@@ -67,7 +66,6 @@ TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna
 AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
-INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)_$(TARGET)-$(TARGET_TYPE)
 endif
 
 INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
@@ -76,6 +74,7 @@ INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
+INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)_$(TARGET)-$(TARGET_TYPE)
 
 REPOSITORY_CONF=$(IMAGE_BUILD_FOLDER)/repositories.conf
 OPKG_CACHE=$(IMAGE_BUILD_FOLDER)/dl
