@@ -10,7 +10,7 @@ VERSION_TAG="PBX_auto_Image_2.5"
 
 # Imagebuilder related configuration
 LEDE_VERSION=17.01.1
-IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64.tar.xz"
+IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.xz"
 LEDE_REPOSITORY_PREFIX="reboot"
 
