@@ -4,16 +4,15 @@ TARGET_TYPE=generic
 ARCH=mips_24kc
 ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 
-
-include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
-
-
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.5"
 
 # Imagebuilder related configuration
 LEDE_VERSION=17.01.1
+
+include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
+
 IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
 LEDE_REPOSITORY_PREFIX="reboot"
