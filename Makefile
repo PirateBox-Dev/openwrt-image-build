@@ -12,7 +12,7 @@ VERSION_TAG="PBX_auto_Image_2.5"
 LEDE_VERSION=17.01.1
 IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-17.01.1-ar71xx-generic.Linux-x86_64.tar.xz"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.xz"
-
+LEDE_REPOSITORY_PREFIX="reboot"
 
 
 IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/packages
@@ -138,8 +138,7 @@ $(INSTALL_OPENWRT_IMAGE_FILE):
 # Repository-Informations
 # On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 cache_package_list:
-	cp -v $(IPKG_STATE_DIR)/lists/piratebox $(INSTALL_CACHE_FOLDER)/Package.gz_piratebox
-	gzip -c $(IPKG_STATE_DIR)/lists/imagebuilder > $(INSTALL_CACHE_FOLDER)/Package.gz_main
+	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 piratebox $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do cp -v $(IPKG_STATE_DIR)/lists/$$packagefile $(INSTALL_CACHE_FOLDER)/Package.gz_$$packagefile ; done 
 
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
