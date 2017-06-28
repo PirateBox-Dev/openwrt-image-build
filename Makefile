@@ -33,7 +33,7 @@ FILES_FOLDER=$(HERE)/files/
 
 # Minimum dependencies
 #GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 block-mount kmod-loop losetup kmod-batman-adv wireless-tools kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables kmod-ipt-nat zlib hostapd-mini iw swap-utils -ppp -ppp-mod-pppoe
-GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 kmod-loop losetup kmod-batman-adv kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables zlib iw swap-utils -ppp -ppp-mod-pppoe
+GENERAL_PACKAGES:=pbxopkg box-installer kmod-usb2 kmod-usb-storage kmod-fs-vfat kmod-nls-cp437 kmod-nls-cp850 kmod-nls-iso8859-1 kmod-nls-iso8859-15 kmod-fs-ext4 kmod-loop losetup kmod-lib-crc16 kmod-nls-utf8 kmod-ip6tables zlib iw swap-utils -ppp -ppp-mod-pppoe block-mount kmod-batman-adv -odhcp6c 
 
 # Install.zip related configuration
 IPKG_TMP:=$(IMAGE_BUILD_FOLDER)/tmp/ipkgtmp
@@ -68,13 +68,14 @@ AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
 endif
 
+INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)_$(TARGET)-$(TARGET_TYPE)
 INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
 INSTALL_FOLDER:=$(HERE)/$(INSTALL_PREFIX)/install
 INSTALL_OPENWRT_IMAGE_FILE:=$(INSTALL_FOLDER)/$(IMAGE_FILE)
 INSTALL_CACHE_FOLDER:=$(INSTALL_FOLDER)/cache/
 INSTALL_ADDITIONAL_PACKAGE_FILE=$(INSTALL_FOLDER)/$(ADDITIONAL_PACKAGE_FILE)
 INSTALLER_CONF=$(INSTALL_FOLDER)/auto_package
-INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)_$(TARGET)-$(TARGET_TYPE)
+
 
 REPOSITORY_CONF=$(IMAGE_BUILD_FOLDER)/repositories.conf
 OPKG_CACHE=$(IMAGE_BUILD_FOLDER)/dl
