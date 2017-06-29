@@ -52,8 +52,8 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.2_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.2_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus extendRoot-avahi-tools
 AUTO_PACKAGE_ORDER="extendRoot-dbus extendRoot-avahi extendRoot-avahi-tools extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
