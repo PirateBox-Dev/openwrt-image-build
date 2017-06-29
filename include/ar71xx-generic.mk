@@ -9,6 +9,7 @@ ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 all: \
 	imagebuilder \
 	GLAR150 \
+	GLAR300 \
 	INET \
 	MR3020 \
 	MR3040 \
@@ -32,6 +33,10 @@ INET: \
 
 GLAR150: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar150-squashfs-sysupgrade.bin
+
+GLAR300: \
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar300-squashfs-sysupgrade.bin  \
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar300m-squashfs-sysupgrade.bin
 
 MR3020: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
