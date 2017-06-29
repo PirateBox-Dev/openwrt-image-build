@@ -11,6 +11,12 @@ VERSION_TAG="PBX_auto_Image_2.5"
 # Imagebuilder related configuration
 LEDE_VERSION=17.01.1
 
+# Add a prefix to allow box installer to find these images, too...
+#  .. LEDE and OpenWrt will join in future, the the name lede_
+#  in the images will vanish, so we can revert it here back without
+#  touching the autoflash feature
+OPENWRT_COMP="openwrt_"
+
 include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
 
 IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
@@ -186,8 +192,8 @@ $(VERSION_FILE):
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
-	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ $(INSTALL_PREFIX)/$@
-	cd $(INSTALL_PREFIX) && sha256sum $@ > $@.sha256
+	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ $(INSTALL_PREFIX)/$(OPENWRT_COMP)$@
+	cd $(INSTALL_PREFIX) && sha256sum $(OPENWRT_COMP)$@ > $(OPENWRT_COMP)$@.sha256
 else
 	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ ./$@
 	sha256sum $@ > $@.sha256
