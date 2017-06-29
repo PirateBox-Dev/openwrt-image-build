@@ -7,6 +7,5 @@ OpenWRT.img.gz
 install*
 openwrt-ar*
 opkg_log
-librarybox_*
-piratebox_*
+target_*
 kareha_3.1.4.zip
