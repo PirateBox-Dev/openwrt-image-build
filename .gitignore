@@ -1,11 +1,11 @@
 files/etc/pbx_custom_image
-ImageBuilder.tar.bz2
+ImageBuilder*.tar.*
 OpenWrt-ImageBuilder-ar71xx_generic-for-linux-*
+lede-*
 OpenWRT.img
 OpenWRT.img.gz
 install*
 openwrt-ar*
 opkg_log
-librarybox_*
-piratebox_*
+target_*
 kareha_3.1.4.zip
