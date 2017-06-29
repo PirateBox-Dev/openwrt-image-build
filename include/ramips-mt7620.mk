@@ -1,5 +1,3 @@
-## Build rules for ar71xx-generic
-
 TARGET=ramips
 TARGET_TYPE=mt7620
 ARCH=mipsel_24kc
