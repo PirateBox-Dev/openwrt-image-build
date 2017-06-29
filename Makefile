@@ -55,15 +55,15 @@ ifeq ($(INSTALL_TARGET), piratebox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.1_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.1_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
-TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus
-AUTO_PACKAGE_ORDER="extendRoot-avahi extendRoot-dbus extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus extendRoot-avahi-tools
+AUTO_PACKAGE_ORDER="extendRoot-dbus extendRoot-avahi extendRoot-avahi-tools extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif 
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.1_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.1_img.tar.gz
-TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna
-AUTO_PACKAGE_ORDER=$(TARGET_PACKAGE)
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-minidlna extendRoot-avahi extendRoot-avahi-tools extendRoot-dbus
+AUTO_PACKAGE_ORDER="extendRoot-dbus extendRoot-avahi extendRoot-avahi-tools extendRoot-librarybox"
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
 endif
