@@ -15,7 +15,7 @@ LEDE_VERSION=17.01.2
 #  .. LEDE and OpenWrt will join in future, the the name lede_
 #  in the images will vanish, so we can revert it here back without
 #  touching the autoflash feature
-OPENWRT_COMP="openwrt_"
+OPENWRT_COMP="openwrt-"
 
 include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
 
