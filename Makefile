@@ -150,7 +150,7 @@ endif
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
 ifeq ($(INSTALL_TARGET), piratebox)
-	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
+	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif 
 
