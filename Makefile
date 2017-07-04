@@ -24,7 +24,7 @@ IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
 LEDE_REPOSITORY_PREFIX="reboot"
 
 
-IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/packages
+IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/
 IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 
 # Prefix for the installer directory
@@ -166,7 +166,7 @@ endif
 
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
 ifeq ($(INSTALL_TARGET), piratebox)
-	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
+	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif 
 
