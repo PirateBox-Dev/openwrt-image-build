@@ -52,3 +52,6 @@ During customization, the package pbxopg gets installed. This package is located
 repository above and modifies opkg.conf at the final image to use that repository too.
 
 For further information check out the [OpenWRT temp repository](https://github.com/PirateBox-Dev/openwrt-temp-repository)
+
+## SNAPSHOT CHANGES
+If you want to build a piratebox image on an lede snapshot, change the variable SNAPSHOT in the makefile and you will be able to access the snapshot imagebuilder and snapshot profiles.
