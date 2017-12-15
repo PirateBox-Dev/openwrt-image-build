@@ -17,7 +17,11 @@ LEDE_VERSION=17.01.2
 #  touching the autoflash feature
 OPENWRT_COMP="openwrt-"
 
+#Load arch variables.
 include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
+
+#Folder for custom drivers per device
+CDEVICE=${CURDIR}/include/device
 
 IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
@@ -189,7 +193,7 @@ $(VERSION_FILE):
 
 %.bin:  parse_install_target
 	echo "$@" | sed -e 's|lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
-	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
+	CDEV_PKG="" ; this_profile="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" ;  test -e "$(CDEVICE)/$${this_profile}.include" && CDEV_PKG="$$(cat $(CDEVICE)/$${this_profile}.include)"; cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$${this_profile}" PACKAGES="$(GENERAL_PACKAGES) $${CDEV_PKG}" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
 	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ $(INSTALL_PREFIX)/$(OPENWRT_COMP)$@
