@@ -91,5 +91,4 @@ WDR4300: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wdr4300-v1-il-squashfs-factory.bin
 
 WR902AC: \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-factory.bin \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-sysupgrade.bin
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-factory.bin 
