@@ -202,7 +202,7 @@ $(VERSION_FILE):
 	cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" PACKAGES="$(GENERAL_PACKAGES)" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
-	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/*squashfs-factory.bin $(INSTALL_PREFIX)/$(OPENWRT_COMP)$@
+	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ $(INSTALL_PREFIX)/$(OPENWRT_COMP)$@
 	cd $(INSTALL_PREFIX) && sha256sum $(OPENWRT_COMP)$@ > $(OPENWRT_COMP)$@.sha256
 else
 	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ ./$@
