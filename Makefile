@@ -6,7 +6,7 @@ VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.4"
 
 # Imagebuilder related configuration
-IMAGEBUILDER_URL="http://212.223.29.116/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
+IMAGEBUILDER_URL="http://downloads.piratebox.de/OpenWrt-ImageBuilder-$(ARCH)_generic-for-linux-x86_64.tar.bz2"
 IMAGE_BUILDER_FILE="ImageBuilder.tar.bz2"
 
 IMAGE_BUILD_REPOSITORY=http://stable.openwrt.piratebox.de/all/packages
