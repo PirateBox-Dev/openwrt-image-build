@@ -9,6 +9,7 @@ ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 all: \
 	imagebuilder \
 	GLAR150 \
+	GLAR300 \
 	INET \
 	MR3020 \
 	MR3040 \
@@ -23,6 +24,7 @@ all: \
 	WR2543 \
 	WR1043 \
 	WDR4300 \
+	WR902AC \
 	install_zip
 
 INET: \
@@ -33,27 +35,31 @@ INET: \
 GLAR150: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar150-squashfs-sysupgrade.bin
 
+GLAR300: \
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar300-squashfs-sysupgrade.bin  \
+	lede-$(LEDE_VERSION)-ar71xx-generic-gl-ar300m-squashfs-sysupgrade.bin
+
 MR3020: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
 
 MR3040: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
 
 MR3220: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3220-v2-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3220-v2-squashfs-factory.bin
 
 MR3420: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3420-v1-squashfs-factory.bin \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin
 
 MR10U: \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin
 
 MR11U: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin \
-	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin 
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin
 
 MR13U: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
@@ -84,3 +90,5 @@ WDR4300: \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wdr4300-v1-squashfs-factory.bin \
 	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wdr4300-v1-il-squashfs-factory.bin
 
+WR902AC: \
+	lede-$(LEDE_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-factory.bin 
