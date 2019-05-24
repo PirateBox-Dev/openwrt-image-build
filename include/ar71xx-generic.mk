@@ -11,14 +11,6 @@ all: \
 	GLAR150 \
 	GLAR300 \
 	INET \
-	MR3020 \
-	MR3040 \
-	MR3220 \
-	MR3420 \
-	MR10U \
-	MR11U \
-	MR13U \
-	WR703N \
 	WR710 \
 	WR842 \
 	WR2543 \
@@ -39,37 +31,8 @@ GLAR300: \
 	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-gl-ar300-squashfs-sysupgrade.bin  \
 	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-gl-ar300m-squashfs-sysupgrade.bin
 
-MR3020: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3020-v1-squashfs-factory.bin
-
-MR3040: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3040-v1-squashfs-factory.bin \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3040-v2-squashfs-factory.bin
-
-MR3220: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3220-v1-squashfs-factory.bin \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3220-v2-squashfs-factory.bin
-
-MR3420: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3420-v1-squashfs-factory.bin \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr3420-v2-squashfs-factory.bin
-
-MR10U: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr10u-v1-squashfs-factory.bin
-
-MR11U: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr11u-v1-squashfs-factory.bin \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr11u-v2-squashfs-factory.bin
-
-MR13U: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-mr13u-v1-squashfs-factory.bin
-
-WR703N: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr703n-v1-squashfs-factory.bin
-
 WR710: \
 	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr710n-v1-squashfs-factory.bin \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr710n-v2-squashfs-factory.bin \
 	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr710n-v2.1-squashfs-factory.bin
 
 WR842: \
@@ -91,5 +54,4 @@ WDR4300: \
 	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wdr4300-v1-il-squashfs-factory.bin
 
 WR902AC: \
-	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-factory.bin
- 
+	openwrt-$(OPENWRT_VERSION)-ar71xx-generic-tl-wr902ac-v1-squashfs-factory.bin 
