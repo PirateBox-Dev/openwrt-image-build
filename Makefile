@@ -23,13 +23,24 @@ include ${CURDIR}/include/$(TARGET)-$(TARGET_TYPE).mk
 #Folder for custom drivers per device
 CDEVICE=${CURDIR}/include/device
 
+SNAPSHOT=false
+ifeq ($(SNAPSHOT), true)
+#SNAPSHOT SETTINGS
+IMAGEBUILDER_URL="https://downloads.lede-project.org/snapshots/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
+IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+else
+#DEFAULT LEDE
 IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
+IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+endif
+
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
 LEDE_REPOSITORY_PREFIX="reboot"
 
 
 IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/
 IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+
 
 # Prefix for the installer directory
 #
@@ -62,13 +73,13 @@ OPKG_INSTALL_DEST:=$(IPKG_OFFLINE_ROOT)/$(EXT_FOLDER)
 # This has to be aligned with current piratebox version :(
 parse_install_target:
 ifeq ($(INSTALL_TARGET), piratebox)
-ADDITIONAL_PACKAGE_IMAGE_URL:="http://stable.openwrt.piratebox.de/piratebox_images/piratebox_ws_1.2_img.tar.gz"
-ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.2_img.tar.gz
+ADDITIONAL_PACKAGE_IMAGE_URL:="http://development.piratebox.de/piratebox_images/piratebox_ws_1.2_img.tar.gz"
+ADDITIONAL_PACKAGE_FILE:=piratebox-ws_1.2_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh
 TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-avahi extendRoot-dbus extendRoot-avahi-tools extendRoot-openssh-sftp-server
 AUTO_PACKAGE_ORDER="extendRoot-dbus extendRoot-openssh-sftp-server extendRoot-avahi extendRoot-avahi-tools extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
 KAREHA_RELEASE:=kareha_3.1.4.zip
-endif 
+endif
 ifeq ($(INSTALL_TARGET),librarybox)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://downloads.librarybox.us/librarybox_2.2_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE=librarybox_2.2_img.tar.gz
@@ -127,7 +138,7 @@ $(INSTALL_ADDITIONAL_PACKAGE_FILE): $(ADDITIONAL_PACKAGE_FILE)
 $(INSTALLER_CONF):
 	 printf '%b\n' "$(AUTO_PACKAGE_ORDER)" > $@
 
-mount_ext: 
+mount_ext:
 	mkdir -p $(DEST_IMAGE_FOLDER)
 	gunzip $(IMAGE_FILE) -c > $(SRC_IMAGE_UNPACKED)
 	sudo mount -o loop,rw,sync $(SRC_IMAGE_UNPACKED) $(DEST_IMAGE_FOLDER)
@@ -135,7 +146,7 @@ mount_ext:
 transfer_data_to_ext:
 	sudo cp -rv --preserve=mode,links $(OPKG_INSTALL_DEST)/* $(DEST_IMAGE_FOLDER)
 
-umount_ext: 
+umount_ext:
 	sudo umount $(DEST_IMAGE_FOLDER)
 
 create_cache: $(IMAGE_FILE) $(OPKG_INSTALL_DEST) $(INSTALL_CACHE_FOLDER)
@@ -151,7 +162,7 @@ $(INSTALL_OPENWRT_IMAGE_FILE):
 # Repository-Informations
 # On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 cache_package_list:
-	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 piratebox $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do cp -v $(IPKG_STATE_DIR)/lists/$$packagefile $(INSTALL_CACHE_FOLDER)/Package.gz_$$packagefile ; done 
+	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 piratebox $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do cp -v $(IPKG_STATE_DIR)/lists/$$packagefile $(INSTALL_CACHE_FOLDER)/Package.gz_$$packagefile ; done
 
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
@@ -172,14 +183,14 @@ prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext
 ifeq ($(INSTALL_TARGET), piratebox)
 	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
-endif 
+endif
 
 # Prepare the image builder folder
 imagebuilder: $(IMAGE_BUILD_FOLDER)
 
 # Extract the image builder
 $(IMAGE_BUILD_FOLDER): $(IMAGE_BUILDER_FILE) $(VERSION_FILE)
-	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -xv || tar -xvf $(IMAGE_BUILDER_FILE) 
+	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -xv || tar -xvf $(IMAGE_BUILDER_FILE)
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IMAGE_BUILD_FOLDER)/repositories.conf
 
 # Download the imagebuilder file
@@ -187,7 +198,7 @@ $(IMAGE_BUILDER_FILE):
 	wget -c $(IMAGEBUILDER_URL) -O $(IMAGE_BUILDER_FILE)
 
 # Create the version file
-$(VERSION_FILE): 
+$(VERSION_FILE):
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
 
@@ -202,11 +213,6 @@ else
 	cp $(IMAGE_BUILD_FOLDER)/bin/targets/$(TARGET)/$(TARGET_TYPE)/$@ ./$@
 	sha256sum $@ > $@.sha256
 endif
-
-
-
-
-
 
 distclean: clean
 	rm -rf $(IMAGE_BUILDER_FILE)
