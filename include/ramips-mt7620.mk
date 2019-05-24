@@ -11,8 +11,8 @@ all: \
 	install_zip
 
 GLMT300: \
-	lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt300a-squashfs-sysupgrade.bin \
-	lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt300n-squashfs-sysupgrade.bin
+	openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt300a-squashfs-sysupgrade.bin \
+	openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt300n-squashfs-sysupgrade.bin
 
 GLMT750: \
-	lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt750-squashfs-sysupgrade.bin
+	openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-gl-mt750-squashfs-sysupgrade.bin
