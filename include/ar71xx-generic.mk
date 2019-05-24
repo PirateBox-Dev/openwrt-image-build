@@ -3,7 +3,7 @@
 TARGET=ar71xx
 TARGET_TYPE=generic
 ARCH=mips_24kc
-ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
+ARCH_BUILDROOT=$(ARCH)_musl
 
 
 all: \
