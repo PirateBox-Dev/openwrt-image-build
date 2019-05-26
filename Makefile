@@ -6,10 +6,10 @@ ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.5"
+VERSION_TAG="PBX_auto_Image_2.6"
 
 # Imagebuilder related configuration
-LEDE_VERSION=17.01.2
+OPENWRT_VERSION=18.06.2
 
 # Add a prefix to allow box installer to find these images, too...
 #  .. LEDE and OpenWrt will join in future, the the name lede_
@@ -26,12 +26,12 @@ CDEVICE=${CURDIR}/include/device
 SNAPSHOT=false
 ifeq ($(SNAPSHOT), true)
 #SNAPSHOT SETTINGS
-IMAGEBUILDER_URL="https://downloads.lede-project.org/snapshots/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
-IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+IMAGEBUILDER_URL="https://downloads.openwrt.org/snapshots/targets/$(TARGET)/$(TARGET_TYPE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
+IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 else
 #DEFAULT LEDE
-IMAGEBUILDER_URL="https://downloads.lede-project.org/releases/$(LEDE_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
-IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+IMAGEBUILDER_URL="https://downloads.openwrt.org/releases/$(OPENWRT_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
+IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 endif
 
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
@@ -39,7 +39,7 @@ LEDE_REPOSITORY_PREFIX="reboot"
 
 
 IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/
-IMAGE_BUILD_FOLDER=$(HERE)/lede-imagebuilder-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 
 
 # Prefix for the installer directory
@@ -203,7 +203,7 @@ $(VERSION_FILE):
 	echo $(VERSION_TAG) > $@
 
 %.bin:  parse_install_target
-	echo "$@" | sed -e 's|lede-$(LEDE_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
+	echo "$@" | sed -e 's|openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
 	CDEV_PKG="" ; this_profile="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" ;  test -e "$(CDEVICE)/$${this_profile}.include" && CDEV_PKG="$$(cat $(CDEVICE)/$${this_profile}.include)"; cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$${this_profile}" PACKAGES="$(GENERAL_PACKAGES) $${CDEV_PKG}" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
 	mkdir -p $(INSTALL_PREFIX)
@@ -222,7 +222,7 @@ distclean: clean
 clean: clean_installer
 	rm -rf $(VERSION_FILE) $(INSTALLER_CONF)
 	rm -rf $(IMAGE_BUILD_FOLDER)
-	rm -rf lede-*
+	rm -rf openwrt-*
 
 clean_installer:
 	if mount | grep $(DEST_IMAGE_FOLDER) > /dev/null; then sudo umount $(DEST_IMAGE_FOLDER); fi;
