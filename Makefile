@@ -190,7 +190,7 @@ imagebuilder: $(IMAGE_BUILD_FOLDER)
 
 # Extract the image builder
 $(IMAGE_BUILD_FOLDER): $(IMAGE_BUILDER_FILE) $(VERSION_FILE)
-	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -xv || tar -xvf $(IMAGE_BUILDER_FILE)
+	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -x || tar -xf $(IMAGE_BUILDER_FILE)
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IMAGE_BUILD_FOLDER)/repositories.conf
 
 # Download the imagebuilder file
