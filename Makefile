@@ -35,7 +35,7 @@ IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(T
 endif
 
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
-LEDE_REPOSITORY_PREFIX="reboot"
+LEDE_REPOSITORY_PREFIX="openwrt_"
 
 
 IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/
@@ -162,7 +162,10 @@ $(INSTALL_OPENWRT_IMAGE_FILE):
 # Repository-Informations
 # On the live image it is called attitiude_adjustment... on the imagebuild - yeah u know
 cache_package_list:
-	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 piratebox $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do cp -v $(IPKG_STATE_DIR)/lists/$$packagefile $(INSTALL_CACHE_FOLDER)/Package.gz_$$packagefile ; done
+	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 piratebox $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do cp -v $(IPKG_STATE_DIR)/lists/$$packagefile $(INSTALL_CACHE_FOLDER)/Packages.gz_$$packagefile ; done
+	# Getting Signature files
+	cd $(IPKG_STATE_DIR)/lists/ ; ls -1 $(LEDE_REPOSITORY_PREFIX)* | while read packagefile ; do grep $$packagefile $(IPKG_INSTROOT)/etc/opkg/*.conf | cut -d ' ' -f 3 | xargs -I {} wget {}/Packages.sig -O $(INSTALL_CACHE_FOLDER)/Packages.sig_$$packagefile ; done
+	wget $(IMAGE_BUILD_REPOSITORY)/Packages.sig -O $(INSTALL_CACHE_FOLDER)/Packages.sig_piratebox
 
 $(INSTALL_ZIP):
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
