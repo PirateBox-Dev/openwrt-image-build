@@ -6,7 +6,7 @@ ARCH_BUILDROOT=$(ARCH)_musl-1.1.16
 
 # Version related configuration
 VERSION_FILE=files/etc/pbx_custom_image
-VERSION_TAG="PBX_auto_Image_2.6"
+VERSION_TAG="PBX_auto_Image_2.7"
 
 # Imagebuilder related configuration
 OPENWRT_VERSION=18.06.2
@@ -208,7 +208,7 @@ endif
 imagebuilder: $(IMAGE_BUILD_FOLDER)
 
 # Extract the image builder
-$(IMAGE_BUILD_FOLDER): $(IMAGE_BUILDER_FILE) $(VERSION_FILE)
+$(IMAGE_BUILD_FOLDER): $(IMAGE_BUILDER_FILE)
 	pbzip2 -cd $(IMAGE_BUILDER_FILE) | tar -x || tar -xf $(IMAGE_BUILDER_FILE)
 	echo "src/gz piratebox $(IMAGE_BUILD_REPOSITORY)" >> $(IMAGE_BUILD_FOLDER)/repositories.conf
 
@@ -217,14 +217,12 @@ $(IMAGE_BUILDER_FILE):
 	wget -c $(IMAGEBUILDER_URL) -O $(IMAGE_BUILDER_FILE)
 
 # Create the version file
-$(VERSION_FILE):
+version_n_target_file:
 	mkdir -p files/etc
-	echo $(VERSION_TAG) > $@
+	echo $(VERSION_TAG) > $(VERSION_FILE)
+	echo "INSTALL_TARGET=$(INSTALL_TARGET)" >> $(VERSION_FILE)
 
-install_target_tag_file:
-	echo "$(INSTALL_TARGET)" > files/etc/pbx_install_target
-
-%.bin:  parse_install_target install_target_tag_file
+%.bin:  parse_install_target version_n_target_file
 	echo "$@" | sed -e 's|openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
 	CDEV_PKG="" ; this_profile="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" ;  test -e "$(CDEVICE)/$${this_profile}.include" && CDEV_PKG="$$(cat $(CDEVICE)/$${this_profile}.include)"; cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$${this_profile}" PACKAGES="$(GENERAL_PACKAGES) $${CDEV_PKG}" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
