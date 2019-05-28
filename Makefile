@@ -88,6 +88,15 @@ AUTO_PACKAGE_ORDER="extendRoot-dbus extendRoot-avahi extendRoot-avahi-tools exte
 # Add additional packages to image build directly on root
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) usb-config-scripts-librarybox pbxmesh
 endif
+ifeq ($(INSTALL_TARGET),plain)
+ADDITIONAL_PACKAGE_IMAGE_URL:=""
+ADDITIONAL_PACKAGE_FILE=""
+TARGET_PACKAGE=""
+AUTO_PACKAGE_ORDER=""
+# Add additional packages to image build directly on root
+GENERAL_PACKAGES:=$(GENERAL_PACKAGES)
+endif
+
 
 INSTALL_PREFIX:=$(TARGET_FOLDER_PREFIX)$(INSTALL_TARGET)_$(TARGET)-$(TARGET_TYPE)
 INSTALL_ZIP:=$(HERE)/$(INSTALL_PREFIX)/install_$(INSTALL_TARGET).zip
@@ -168,8 +177,10 @@ cache_package_list:
 	wget $(IMAGE_BUILD_REPOSITORY)/Packages.sig -O $(INSTALL_CACHE_FOLDER)/Packages.sig_piratebox
 
 $(INSTALL_ZIP):
+ifneq ($(INSTALL_TARGET),plain)
 	cd $(INSTALL_PREFIX) && zip -r9 $@ ./install
 	cd $(INSTALL_PREFIX) && sha256sum ` basename $@ `   > $@.sha256
+endif
 
 # Prepare the installation zip
 install_zip: eval_install_zip prepare_install_zip $(INSTALL_ZIP)
@@ -182,10 +193,15 @@ else
 	$(parse_install_target)
 endif
 
+ifneq ($(INSTALL_TARGET),plain)
 prepare_install_zip: create_cache cache_package_list $(INSTALLER_CONF) mount_ext transfer_data_to_ext umount_ext $(INSTALL_OPENWRT_IMAGE_FILE) $(INSTALL_ADDITIONAL_PACKAGE_FILE)
 ifeq ($(INSTALL_TARGET), piratebox)
 	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
+endif
+else
+prepare_install_zip:
+	echo "Skipping install.zip"
 endif
 
 # Prepare the image builder folder
