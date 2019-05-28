@@ -221,7 +221,10 @@ $(VERSION_FILE):
 	mkdir -p files/etc
 	echo $(VERSION_TAG) > $@
 
-%.bin:  parse_install_target
+install_target_tag_file:
+	echo "$(INSTALL_TARGET)" > files/etc/pbx_install_target
+
+%.bin:  parse_install_target install_target_tag_file
 	echo "$@" | sed -e 's|openwrt-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE)-||' -e 's|-squashfs-factory.bin||' -e 's|-squashfs-sysupgrade.bin||' > $(IMAGE_BUILD_FOLDER)/profile.build.tmp
 	CDEV_PKG="" ; this_profile="$$(cat $(IMAGE_BUILD_FOLDER)/profile.build.tmp )" ;  test -e "$(CDEVICE)/$${this_profile}.include" && CDEV_PKG="$$(cat $(CDEVICE)/$${this_profile}.include)"; cd $(IMAGE_BUILD_FOLDER) &&	make image PROFILE="$${this_profile}" PACKAGES="$(GENERAL_PACKAGES) $${CDEV_PKG}" FILES=$(FILES_FOLDER)
 ifneq ($(INSTALL_PREFIX),)
