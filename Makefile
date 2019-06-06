@@ -84,8 +84,8 @@ ifeq ($(INSTALL_TARGET), thewrong)
 ADDITIONAL_PACKAGE_IMAGE_URL:="http://development.piratebox.de/piratebox_images/piratebox_ws_1.2_img.tar.gz"
 ADDITIONAL_PACKAGE_FILE:=piratebox_ws_1.2_img.tar.gz
 GENERAL_PACKAGES:=$(GENERAL_PACKAGES) pbxmesh usb-config-scripts
-TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) piratebox-mod-imageboard extendRoot-minidlna  extendRoot-openssh-sftp-server 
-AUTO_PACKAGE_ORDER="extendRoot-openssh-sftp-server extendRoot-piratebox piratebox-mod-imageboard extendRoot-minidlna"
+TARGET_PACKAGE=extendRoot-$(INSTALL_TARGET) extendRoot-thewrong-mod-imageboard extendRoot-minidlna  extendRoot-openssh-sftp-server lighttpd-mod-accesslog lighttpd-mod-status 
+AUTO_PACKAGE_ORDER="extendRoot-openssh-sftp-server extendRoot-thewrong thewrong-mod-imageboard extendRoot-minidlna"
 KAREHA_RELEASE:=kareha_3.1.4.zip
 endif
 ifeq ($(INSTALL_TARGET),librarybox)
