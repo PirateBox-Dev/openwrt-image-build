@@ -30,8 +30,8 @@ IMAGEBUILDER_URL="https://downloads.openwrt.org/snapshots/targets/$(TARGET)/$(TA
 IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 else
 #DEFAULT LEDE
-IMAGEBUILDER_URL="https://downloads.openwrt.org/releases/$(OPENWRT_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
-IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+IMAGEBUILDER_URL="https://downloads.openwrt.org/releases/$(OPENWRT_VERSION)/targets/$(TARGET)/$(TARGET_TYPE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64.tar.xz"
+IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 endif
 
 IMAGE_BUILDER_FILE="ImageBuilder-$(TARGET)_$(TARGET_TYPE).tar.xz"
@@ -39,7 +39,7 @@ LEDE_REPOSITORY_PREFIX="openwrt_"
 
 
 IMAGE_BUILD_REPOSITORY?=http://development.piratebox.de/all/
-IMAGE_BUILD_FOLDER=$(HERE)/openwrt-imagebuilder-$(OPENWRT_VERSION)-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
+IMAGE_BUILD_FOLDER?=$(HERE)/openwrt-imagebuilder-$(TARGET)-$(TARGET_TYPE).Linux-x86_64/
 
 
 # Prefix for the installer directory
