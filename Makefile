@@ -9,7 +9,7 @@ VERSION_FILE=files/etc/pbx_custom_image
 VERSION_TAG="PBX_auto_Image_2.7"
 
 # Imagebuilder related configuration
-OPENWRT_VERSION=18.06.3
+OPENWRT_VERSION=18.06.4
 
 # Add a prefix to allow box installer to find these images, too...
 #  .. LEDE and OpenWrt will join in future, the the name lede_
