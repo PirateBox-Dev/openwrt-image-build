@@ -207,6 +207,10 @@ ifeq ($(INSTALL_TARGET), piratebox)
 	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
 	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
 endif
+ifeq ($(INSTALL_TARGET), thewrong)
+	if [ ! -e $(KAREHA_RELEASE) ]; then wget -c http://wakaba.c3.cx/releases/Kareha/$(KAREHA_RELEASE) -O $(KAREHA_RELEASE); fi;
+	cp -v $(KAREHA_RELEASE) $(INSTALL_FOLDER)
+endif
 else
 prepare_install_zip:
 	echo "Skipping install.zip"
